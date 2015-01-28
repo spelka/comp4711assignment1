@@ -63,11 +63,20 @@ function endsWith($string, $ending)
  * Assumption: that the URL helper has been loaded.
  * @param type $choices Array of name=>link pairs
  */
-function build_menu_bar($choices)
+function build_menu_bar($choices, $activeLink)
 {
-    $result = '<ul>';
+    $result = '<ul class="nav navbar-nav">';
     foreach ($choices as $name => $link)
-    $result .= '<li>' . anchor($link, $name) . '</li>';
+    {
+        if($activeLink !== $link)
+        {
+            $result .= '<li>' . anchor($link, $name) . '</li>';
+        }
+        else
+        {
+            $result .= '<li class="active">' . anchor($link, $name) . '</li>';
+        }
+    }
     $result .= '</ul>';
     return $result;
 }

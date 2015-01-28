@@ -1,23 +1,14 @@
 <?php
 
-/**
- * core/MY_Controller.php
- *
- * Default application controller
- *
- * @author      JLP
- * @copyright           2010-2013, James L. Parry
- * ------------------------------------------------------------------------
- */
 class Application extends CI_Controller {
 
     protected $data = array();      // parameters for view components
     protected $id;                  // identifier for our content
-
-    /**
-     * Constructor.
-     * Establish view parameters & load common helpers
-     */
+    protected $choices = array(     // our menu navbar
+        'Home'      => '../',
+        'Gallery'   => '../gallery',
+        'About'     => '../about'
+        );
 
     function __construct() {
         parent::__construct();
@@ -30,13 +21,16 @@ class Application extends CI_Controller {
     }
 
     /**
-     * Render this page
+     * Render the page...parameters needed:
+     * @param pagetitle
+     * @param pagebody
+     * @param title
      */
     function render() {
-        // $this->data['menubar'] = $this->parser->parse('_menubar', $this->config->item('menu_choices'),true);
+        $this->data['navbar'] = build_menu_bar($this->choices, $this->data['activelink']);
         $this->data['content'] = $this->parser->parse($this->data['pagebody'], $this->data, true);
 
-        // finally, build the browser page!
+        // build the browser page
         $this->data['data'] = &$this->data;
         $this->parser->parse('_template', $this->data);
     }
