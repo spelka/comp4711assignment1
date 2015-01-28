@@ -5,10 +5,10 @@ class Application extends CI_Controller {
     protected $data = array();      // parameters for view components
     protected $id;                  // identifier for our content
     protected $choices = array(     // our menu navbar
-        'Home'      => '../'
+        'Home'      => '../',
         'Ad Detail'   => '../Ad_Detail',
         'Profile Management'     => '../Profile_Management',
-        'Register'   => '../Register',
+        'Register'   => '../Register'
         );
 
     function __construct() {
