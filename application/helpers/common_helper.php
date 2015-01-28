@@ -19,10 +19,10 @@ function fieldExtract($source, $target, $fields)
 {
     foreach ($fields as $prop)
     {
-    if (isset($source[$prop]))
-    {
-        $target->$prop = html_entity_decode($source[$prop]);
-    }
+        if (isset($source[$prop]))
+        {
+            $target->$prop = html_entity_decode($source[$prop]);
+        }
     }
 }
 
@@ -36,10 +36,10 @@ function fieldInject($source, $target, $fields)
 {
     foreach ($fields as $prop)
     {
-    if (isset($source->$prop))
-    {
-        $target[$prop] = $source->html_entity_decode($prop);
-    }
+        if (isset($source->$prop))
+        {
+            $target[$prop] = $source->html_entity_decode($prop);
+        }
     }
 }
 
