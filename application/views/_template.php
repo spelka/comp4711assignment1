@@ -12,8 +12,8 @@
     <title>{pagetitle}</title>
 
     <link href="assets/css/custom.css" rel="stylesheet">
-    <link href="http://comp4711.assignment.local/assets/css/bootstrap.css" rel="stylesheet">
-    <link href="http://comp4711.assignment.local/assets/css/card.css" rel="stylesheet">
+    <link href="{baseurl}assets/css/bootstrap.css" rel="stylesheet">
+    <link href="{baseurl}assets/css/card.css" rel="stylesheet">
     <link href="http://getbootstrap.com/examples/starter-template/starter-template.css" rel="stylesheet">
 </head>
 
@@ -44,8 +44,8 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="http://comp4711.assignment.local/assets/js/jquery.min.js"></script>
-    <script src="http://comp4711.assignment.local/assets/js/bootstrap.min.js"></script>
+    <script src="{baseurl}assets/js/jquery.min.js"></script>
+    <script src="{baseurl}assets/js/bootstrap.min.js"></script>
 
 
 </body>

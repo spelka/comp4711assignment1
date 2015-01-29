@@ -14,7 +14,7 @@ class Application extends CI_Controller {
         $this->choices['Profile Management']  = base_url('/Profile_Management');
         $this->choices['Register']            = base_url('/Register');
 
-        $this->data = array();
+        $this->data['baseurl'] = base_url('/');
         $this->data['title'] = 'TobyCatApps';    // our default title
         $this->data['pagetitle'] = 'Welcome';   // our default page
 
