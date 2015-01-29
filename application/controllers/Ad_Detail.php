@@ -21,6 +21,7 @@ class Ad_Detail extends Application {
      */
     public function index()
     {
+        $this->data['activelink']    = '../Ad_Detail';
         $this->data['pagetitle'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
         $this->data['pagebody'] = 'ad_detail'; //Change to whatever the ad is later
 
