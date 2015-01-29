@@ -11,9 +11,13 @@
 
     <title>{pagetitle}</title>
 
+<<<<<<< HEAD
     <link href="assets/css/custom.css" rel="stylesheet">
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+=======
     <link href="http://comp4711.assignment.local/assets/css/bootstrap.css" rel="stylesheet">
     <link href="http://comp4711.assignment.local/assets/css/card.css" rel="stylesheet">
+>>>>>>> 5294d6b9a83da2e4b6d4ad8b2119e71372d841cb
     <link href="http://getbootstrap.com/examples/starter-template/starter-template.css" rel="stylesheet">
 </head>
 
