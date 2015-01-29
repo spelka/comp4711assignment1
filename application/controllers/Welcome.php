@@ -20,6 +20,21 @@ class Welcome extends Application {
         $this->data['pagetitle']     = 'Starter Template for Bootstrap';
         $this->data['pagebody']      = 'welcome';
 
+        $this->load->helper('html');
+
+        $list = array(
+                    anchor('', 'Cars', 'title="Cars"'), 
+                    anchor('', 'Cats', 'title="Cats"'),
+                    anchor('', 'Dogs', 'title="Dogs")')
+            );
+
+        $attributes = array(
+                            'class' => 'nav nav-pills nav-stacked list-group',
+                            'id'    => 'mylist'
+                            );
+
+        $this->data['menu_item'] = ul($list, $attributes);
+        
         $this->render();
     }
 }
