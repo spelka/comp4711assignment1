@@ -26,7 +26,15 @@ menu,
 nav,
 section,
 summary {
+  /* size */
+  width: 100%;
+
+  /* display */
   display: block;
+
+  /* positioning */
+  position: absolute;
+  left: 0px;
 }
 audio,
 canvas,
