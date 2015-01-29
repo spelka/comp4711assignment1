@@ -10,6 +10,9 @@ class Welcome extends Application {
         $this->data['pagetitle']     = 'Starter Template for Bootstrap';
         $this->data['pagebody']      = 'welcome';
 
+        $cars = array("Volvo", "BMW", "Toyota");
+        
+        
         $this->render();
     }
 }

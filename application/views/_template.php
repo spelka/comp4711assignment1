@@ -7,10 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="http://getbootstrap.com/favicon.ico">
+    <link rel="icon" href="">
 
     <title>{pagetitle}</title>
 
+    <link href="assets/css/custom.css" rel="stylesheet">
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://getbootstrap.com/examples/starter-template/starter-template.css" rel="stylesheet">
 
@@ -28,7 +29,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="http://getbootstrap.com/examples/starter-template/#">{title}</a>
+                <a class="navbar-brand" href="/">{title}</a>
             </div>
             <div id="navbar" class="collapse navbar-collapse">
                 {navbar}
