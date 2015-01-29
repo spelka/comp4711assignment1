@@ -59,6 +59,8 @@ class Register extends Application {
         $this->data['pagetitle'] = 'Register';
         $this->data['pagebody'] = 'register';
 
+        $this->data['activelink']    = '../Register';
+
         $this->render();
 	}
 }
