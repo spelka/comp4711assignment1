@@ -12,9 +12,8 @@
     <title>{pagetitle}</title>
 
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/card.css" rel="stylesheet">
     <link href="http://getbootstrap.com/examples/starter-template/starter-template.css" rel="stylesheet">
-
-    <style type="text/css"></style>
 </head>
 
 <body>

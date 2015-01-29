@@ -1,0 +1,39 @@
+.card {
+    /* positioning */
+    position: relative;
+
+    /* size */
+    height: 100px;
+
+    /* layout */
+    margin: 10px;
+
+    /* appearance */
+    background: black;
+    overflow: hidden;
+}
+
+.cardcaption {
+    /* positioning */
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+
+    /* appearance */
+    background: red;
+    overflow: hidden;
+
+    /* size */
+    height: 30px;
+    width: 100%;
+
+    /* animation */
+    -webkit-transition: height 1s, -webkit-transform 1s; /* For Safari 3.1 to 6.0 */
+    transition: height 1s, transform 1s;
+
+}
+
+.cardcaption:hover {
+    /* size */
+    height: 100%;
+}
