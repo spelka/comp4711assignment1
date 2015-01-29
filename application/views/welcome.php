@@ -8,6 +8,7 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div class="card">
+                        <img src="assets/img/portfolio/cabin.png"/>
                         <div class="cardcaption">
                             My Title<br/>
                             my summary and things.<br/>
@@ -19,6 +20,7 @@
                 </div>
                 <div class="col-sm-4">
                     <div class="card">
+                        <img src="assets/img/portfolio/cabin.png"/>
                         <div class="cardcaption">
                             My Title<br/>
                             my summary and things.<br/>
@@ -30,6 +32,7 @@
                 </div>
                 <div class="col-sm-4">
                     <div class="card">
+                        <img src="assets/img/portfolio/cabin.png"/>
                         <div class="cardcaption">
                             My Title<br/>
                             my summary and things.<br/>
@@ -43,6 +46,7 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div class="card">
+                        <img src="assets/img/portfolio/cabin.png"/>
                         <div class="cardcaption">
                             My Title<br/>
                             my summary and things.<br/>
@@ -54,6 +58,7 @@
                 </div>
                 <div class="col-sm-4">
                     <div class="card">
+                        <img src="assets/img/portfolio/cabin.png"/>
                         <div class="cardcaption">
                             My Title<br/>
                             my summary and things.<br/>
@@ -65,6 +70,7 @@
                 </div>
                 <div class="col-sm-4">
                     <div class="card">
+                        <img src="assets/img/portfolio/cabin.png"/>
                         <div class="cardcaption">
                             My Title<br/>
                             my summary and things.<br/>
