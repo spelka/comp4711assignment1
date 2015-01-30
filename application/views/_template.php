@@ -12,10 +12,9 @@
     <title>{pagetitle}</title>
 
     <link href="assets/css/custom.css" rel="stylesheet">
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{baseurl}assets/css/bootstrap.css" rel="stylesheet">
+    <link href="{baseurl}assets/css/card.css" rel="stylesheet">
     <link href="http://getbootstrap.com/examples/starter-template/starter-template.css" rel="stylesheet">
-
-    <style type="text/css"></style>
 </head>
 
 <body>
@@ -45,8 +44,8 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="{baseurl}assets/js/jquery.min.js"></script>
+    <script src="{baseurl}assets/js/bootstrap.min.js"></script>
 
 
 </body>

@@ -4,17 +4,17 @@ class Application extends CI_Controller {
 
     protected $data = array();      // parameters for view components
     protected $id;                  // identifier for our content
-    protected $choices = array(     // our menu navbar
-        'Home'      => '../',
-        'Ad Detail'   => '../Ad_Detail',
-        'Profile Management'     => '../Profile_Management',
-        'Register'   => '../Register'
-        );
+    protected $choices = array();   // our menu navbar
 
-    function __construct() {
+    public function __construct() {
         parent::__construct();
 
-        $this->data = array();
+        $this->choices['Home']                = base_url('/');
+        $this->choices['Ad Detail']           = base_url('/Ad_Detail');
+        $this->choices['Profile Management']  = base_url('/Profile_Management');
+        $this->choices['Register']            = base_url('/Register');
+
+        $this->data['baseurl'] = base_url('/');
         $this->data['title'] = 'TobyCatApps';    // our default title
         $this->data['pagetitle'] = 'Welcome';   // our default page
 
@@ -27,7 +27,7 @@ class Application extends CI_Controller {
      * @param pagebody
      * @param title
      */
-    function render() {
+    protected function render() {
         $this->data['navbar'] = build_menu_bar($this->choices, $this->data['activelink']);
         $this->data['content'] = $this->parser->parse($this->data['pagebody'], $this->data, true);
 
