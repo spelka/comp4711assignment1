@@ -31,8 +31,10 @@ class Application extends CI_Controller {
         $this->data['navbar'] = build_menu_bar($this->choices, $this->data['activelink']);
         $this->data['content'] = $this->parser->parse($this->data['pagebody'], $this->data, true);
 
+        $this->data['user'] = $this->parser->parse('loginbar',$this->data,true);
+        
         // build the browser page
-        $this->data['data'] = &$this->data;
+        $this->data['data'] = $this->data;
         $this->parser->parse('_template', $this->data);
     }
 
