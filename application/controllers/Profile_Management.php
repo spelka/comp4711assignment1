@@ -61,6 +61,8 @@ class Profile_Management extends Application {
         $this->data['pagetitle'] = 'Manage Profile';
         $this->data['pagebody'] = 'profile_management';
 
+        $this->data['activelink']    = '../Profile_Management';
+
         $this->render();
 	}
 }
