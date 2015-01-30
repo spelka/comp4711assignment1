@@ -4,26 +4,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Welcome extends Application {
 
-    public function cardtest()
-    {
-        // render page
-        $this->data['activelink']    = base_url('/Welcome/cardtest');
-        $this->data['pagetitle']     = 'Starter Template for Bootstrap';
-        $this->data['pagebody']      = 'cards';
-
-        $this->render();
-    }
-
     public function index()
     {
-        $this->data['activelink']    = base_url('/');
-        $this->data['pagetitle']     = 'Starter Template for Bootstrap';
-        $this->data['pagebody']      = 'welcome';
+        // generate cards
+        $this->load->model('ads');
+        $cards = $this->ads->all();
 
+        foreach($cards as $card)
+        {
+            $cells[] = $this->parser->parse('_card',(array)$card,true);
+        }
+
+        $this->data['cards'] = $cells;
+
+        // generate categories
         $this->load->helper('html');
 
         $list = array(
-                    anchor('', 'Cars', 'title="Cars"'), 
+                    anchor('', 'Cars', 'title="Cars"'),
                     anchor('', 'Cats', 'title="Cats"'),
                     anchor('', 'Dogs', 'title="Dogs")')
             );
@@ -34,7 +32,12 @@ class Welcome extends Application {
                             );
 
         $this->data['menu_item'] = ul($list, $attributes);
-        
+
+        // fill in controller parameters
+        $this->data['activelink']    = base_url('/');
+        $this->data['pagetitle']     = 'Welcome';
+        $this->data['pagebody']      = 'welcome';
+
         $this->render();
     }
 }
