@@ -10,7 +10,6 @@ class Application extends CI_Controller {
         parent::__construct();
 
         $this->choices['Home']                = base_url('/');
-        $this->choices['Ad Detail']           = base_url('/Ad_Detail');
         $this->choices['Profile Management']  = base_url('/Profile_Management');
         $this->choices['Register']            = base_url('/Register');
 
@@ -31,7 +30,14 @@ class Application extends CI_Controller {
         $this->data['navbar'] = build_menu_bar($this->choices, $this->data['activelink']);
         $this->data['content'] = $this->parser->parse($this->data['pagebody'], $this->data, true);
 
-        $this->data['user'] = $this->parser->parse('loginbar',$this->data,true);
+        if(true)
+        {
+            $this->data['user'] = $this->parser->parse('login',$this->data,true);
+        }
+        else
+        {
+            $this->data['user'] = $this->parser->parse('loginbar',$this->data,true);            
+        }
         
         // build the browser page
         $this->data['data'] = $this->data;
