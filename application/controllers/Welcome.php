@@ -8,14 +8,32 @@ class Welcome extends Application {
     {
         // generate cards
         $this->load->model('ads');
-        $cards = $this->ads->all();
+        $ads = $this->ads->all();
 
-        foreach($cards as $card)
+        $cards = array();
+
+        foreach($ads as $ad)
         {
-            $cells[] = $this->parser->parse('_card',(array)$card,true);
+            $card = array();
+            $card['cardimgsrc']     = base_url('assets/img/portfolio/cabin.png');
+            $card['cardimagealt']   = $ad['title'];
+            $card['cardtitle']      = $ad['title'];
+            $card['cardcaption']    = $ad['description'];
+            $cards[] = $this->parser->parse('_card',$card,true);
         }
 
-        $this->data['cards'] = $cells;
+        // generate rows, with the cards inside them ... 3 cards per row
+        $columns = array();
+        while(count($cards) > 0)
+        {
+            $column = array();
+            $column['columnclass']  = 'col-sm-4';
+            $column['content']      = array_pop($cards);
+            $columns[] = $this->parser->parse('_grid',$column,true);
+        }
+
+        // generate the grid
+        $this->data['cards'] = $cards[0];
 
         // generate categories
         $this->load->helper('html');

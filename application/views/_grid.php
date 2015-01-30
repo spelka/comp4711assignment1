@@ -1,9 +1,11 @@
-{row}
-<div class="row">
-    {column}
-    <div class="col-sm-4">
-        {content}
+<div>
+    {row}
+    <div class="row">
+        {column}
+        <div class="{columnclass}">
+            {content}
+        </div>
+        {/column}
     </div>
-    {/card}
+    {/row}
 </div>
-{/row}
