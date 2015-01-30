@@ -2,40 +2,39 @@
 
 class Users extends CI_Model {
 
-    // The data comes from http://www.quotery.com/top-100-funny-quotes-of-all-time/?PageSpeed=noscript
     var $data = array(
         array(
-            'id'            => '1',
+            'ID'            => '1',
             'username'      => 'Bob Monkhouse',
             'password'      => 'p@$sw0rD',
             'email'         => 'noreply@nowhere.com',
-            'displayname'   => 'Bob Monkhouse',
+            'displayname'   => 'Bob Monkhouse'),
         array(
-            'id'            => '2',
+            'ID'            => '2',
             'username'      => 'Elayne Boosler',
             'password'      => 'p@$sw0rD',
             'email'         => 'noreply@nowhere.com',
-            'displayname'   => 'Elayne Boosler',
+            'displayname'   => 'Elayne Boosler'),
         array(
-            'id'            => '3',
+            'ID'            => '3',
             'username'      => 'Mark Russell',
             'password'      => 'p@$sw0rD',
             'email'         => 'noreply@nowhere.com',
-            'displayname'   => 'Mark Russell',
+            'displayname'   => 'Mark Russell'),
         array(
-            'id'            => '4',
+            'ID'            => '4',
             'username'      => 'Anonymous',
             'password'      => 'p@$sw0rD',
             'email'         => 'noreply@nowhere.com',
-            'displayname'   => 'Anonymous',
+            'displayname'   => 'Anonymous'),
         array(
-            'id'            => '5',
+            'ID'            => '5',
             'username'      => 'Socrates',
             'password'      => 'p@$sw0rD',
             'email'         => 'noreply@nowhere.com',
-            'displayname'   => 'Socrates',
+            'displayname'   => 'Socrates'),
         array(
-            'id'            => '6',
+            'ID'            => '6',
             'username'      => 'Isaac Asimov',
             'password'      => 'p@$sw0rD',
             'email'         => 'noreply@nowhere.com',
@@ -47,29 +46,18 @@ class Users extends CI_Model {
         parent::__construct();
     }
 
-    // retrieve a single quote
+    // retrieve a single row
     public function get($which) {
         // iterate over the data until we find the one we want
         foreach ($this->data as $record)
-            if ($record['id'] == $which)
+            if ($record['ID'] == $which)
                 return $record;
         return null;
     }
 
-    // retrieve all of the quotes
+    // retrieve all rows
     public function all() {
         return $this->data;
-    }
-
-    // retrieve the first quote
-    public function first() {
-        return $this->data[0];
-    }
-
-    // retrieve the last quote
-    public function last() {
-        $index = count($this->data) - 1;
-        return $this->data[$index];
     }
 
 }
