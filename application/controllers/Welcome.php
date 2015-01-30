@@ -22,18 +22,39 @@ class Welcome extends Application {
             $cards[] = $this->parser->parse('_card',$card,true);
         }
 
-        // generate rows, with the cards inside them ... 3 cards per row
+        // generate columns, with the cards inside them
         $columns = array();
         while(count($cards) > 0)
         {
             $column = array();
             $column['columnclass']  = 'col-sm-4';
             $column['content']      = array_pop($cards);
-            $columns[] = $this->parser->parse('_grid',$column,true);
+            $columns[] = $column;
+        }
+
+        // generate rows with the columns inside them (3 columns per row)
+        $rows = array();
+        while(count($columns) > 0)
+        {
+            $row = array();
+            $row['column'] = array();
+            for($count = 0; $count < 3; $count++)
+            {
+                if(count($columns) > 0)
+                {
+                    $row['column'][] = array_pop($columns);
+                }
+                else
+                {
+                    break;
+                }
+            }
+            $rows[] = $row;
         }
 
         // generate the grid
-        $this->data['cards'] = $cards[0];
+        // $this->data['cards'] = $cards[0];
+        $this->data['cards'] = $this->parser->parse('_grid', $rows, true);
 
         // generate categories
         $this->load->helper('html');
