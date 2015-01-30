@@ -25,17 +25,31 @@ class Create_ad extends Application {
 	 
 	 public function index()
 	 {
-		$this->load->view("create_ad");
+	    $this->data['activelink']    = base_url('/Create_ad');
+        $this->data['pagetitle'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
+        $this->data['pagebody'] = 'create_ad'; //Change to whatever the ad is later
+
+        $this->render();
 	 }
 	 
 	 public function cancel()
 	 {
-		$this->load->view("/");
+		//$this->load->view("/");
+		$this->data['activelink']    = base_url('/Create_ad');
+        $this->data['pagetitle'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
+        $this->data['pagebody'] = '/'; //Change to whatever the ad is later
+
+        $this->render();
 	 }
 	 
 	 public function submit()
 	 {
-		$this->load->view("preview_ad");
+		//$this->load->view("preview_ad");
+		$this->data['activelink']    = base_url('/Create_ad');
+        $this->data['pagetitle'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
+        $this->data['pagebody'] = 'preview_ad'; //Change to whatever the ad is later
+
+        $this->render();
 	 }
 	 
 	/**
