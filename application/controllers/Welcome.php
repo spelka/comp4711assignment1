@@ -15,6 +15,7 @@ class Welcome extends Application {
         foreach($ads as $ad)
         {
             $card = array();
+            $card['cardlink']       = base_url('Ad_Detail');
             $card['cardimgsrc']     = base_url('assets/img/portfolio/cabin.png');
             $card['cardimagealt']   = $ad['title'];
             $card['cardtitle']      = $ad['title'];
@@ -34,6 +35,7 @@ class Welcome extends Application {
 
         // generate rows with the columns inside them (3 columns per row)
         $rows = array();
+        $rows['row'] = array();
         while(count($columns) > 0)
         {
             $row = array();
@@ -49,7 +51,7 @@ class Welcome extends Application {
                     break;
                 }
             }
-            $rows[] = $row;
+            $rows['row'][] = $row;
         }
 
         // generate the grid
