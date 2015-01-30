@@ -4,26 +4,37 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Welcome extends Application {
 
-    /**
-     * Index Page for this controller.
-     *
-     * Maps to the following URL
-     *         http://example.com/index.php/welcome
-     *    - or -
-     *         http://example.com/index.php/welcome/index
-     *    - or -
-     * Since this controller is set as the default controller in
-     * config/routes.php, it's displayed at http://example.com/
-     *
-     * So any other public methods not prefixed with an underscore will
-     * map to /index.php/welcome/<method_name>
-     * @see http://codeigniter.com/user_guide/general/urls.html
-     */
+    public function cardtest()
+    {
+        // render page
+        $this->data['activelink']    = base_url('/Welcome/cardtest');
+        $this->data['pagetitle']     = 'Starter Template for Bootstrap';
+        $this->data['pagebody']      = 'cards';
+
+        $this->render();
+    }
+
     public function index()
     {
-        $this->data['pagetitle'] = 'Starter Template for Bootstrap';
-        $this->data['pagebody'] = 'welcome';
+        $this->data['activelink']    = base_url('/');
+        $this->data['pagetitle']     = 'Starter Template for Bootstrap';
+        $this->data['pagebody']      = 'welcome';
 
+        $this->load->helper('html');
+
+        $list = array(
+                    anchor('', 'Cars', 'title="Cars"'), 
+                    anchor('', 'Cats', 'title="Cats"'),
+                    anchor('', 'Dogs', 'title="Dogs")')
+            );
+
+        $attributes = array(
+                            'class' => 'nav nav-pills nav-stacked list-group',
+                            'id'    => 'mylist'
+                            );
+
+        $this->data['menu_item'] = ul($list, $attributes);
+        
         $this->render();
     }
 }

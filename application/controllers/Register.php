@@ -37,7 +37,7 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Register extends CI_Controller {
+class Register extends Application {
 
 	/**
 	 * Index Page for this controller.
@@ -56,7 +56,12 @@ class Register extends CI_Controller {
 	 */
 	public function index()
 	{
-		$this->load->view('register');
+        $this->data['pagetitle'] = 'Register';
+        $this->data['pagebody'] = 'register';
+
+        $this->data['activelink']    = '../Register';
+
+        $this->render();
 	}
 }
 

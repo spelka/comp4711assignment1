@@ -37,7 +37,7 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Profile_Management extends CI_Controller {
+class Profile_Management extends Application {
 
 	/**
 	 * Index Page for this controller.
@@ -56,7 +56,14 @@ class Profile_Management extends CI_Controller {
 	 */
 	public function index()
 	{
-		$this->load->view('profile_management');
+		//$this->load->view('profile_management');
+
+        $this->data['pagetitle'] = 'Manage Profile';
+        $this->data['pagebody'] = 'profile_management';
+
+        $this->data['activelink']    = '../Profile_Management';
+
+        $this->render();
 	}
 }
 

@@ -1,4 +1,19 @@
-<div class="starter-template">
-    <h1>Bootstrap starter template</h1>
-    <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
+ <div class="row">
+    <div class="col-md-3 menu-background">
+      
+        {menu_item}
+        
+        <!--
+        <ul class="nav nav-pills nav-stacked">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="#">Cars</a></li>
+        <li><a href="#">Cats</a></li>
+        <li><a href="#">Dogs</a></li>
+        </ul>
+        -->
+    </div>
+    <div class="col-md-9">
+    </div>
+
+    <div class="clearfix visible-lg"></div>
 </div>
