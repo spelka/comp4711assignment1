@@ -15,6 +15,7 @@
     <link href="{baseurl}assets/css/bootstrap.css" rel="stylesheet">
     <link href="{baseurl}assets/css/card.css" rel="stylesheet">
     <link href="http://getbootstrap.com/examples/starter-template/starter-template.css" rel="stylesheet">
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" >
 </head>
 
 <body>
