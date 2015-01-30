@@ -32,11 +32,11 @@ class Application extends CI_Controller {
 
         if(true)
         {
-            $this->data['user'] = $this->parser->parse('login',$this->data,true);
+            $this->data['user'] = $this->parser->parse('_login',$this->data,true);
         }
         else
         {
-            $this->data['user'] = $this->parser->parse('loginbar',$this->data,true);            
+            $this->data['user'] = $this->parser->parse('_logged_in',$this->data,true);            
         }
         
         // build the browser page
