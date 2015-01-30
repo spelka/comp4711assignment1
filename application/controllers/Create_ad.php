@@ -30,7 +30,7 @@ class Create_ad extends Application {
 	 
 	 public function cancel()
 	 {
-		$this->load->view("welcome");
+		$this->load->view("/");
 	 }
 	 
 	 public function submit()

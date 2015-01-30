@@ -17,8 +17,7 @@
 			   3pm and 6pm.</p><br>
 		</div><!--end submission container-->
 		
-		<button type="button" class="btn">Confirm</button>
-		<button type="button" class="btn">Cancel</button>
+		<a  type="button" class="btn btn-default" href="/">Done</a>
 		
 		<!-- ASSIGNMENT 2 CODE HERE, DO NOT REMOVE
 		
