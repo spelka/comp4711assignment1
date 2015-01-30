@@ -29,7 +29,7 @@ class Welcome extends Application {
             );
 
         $attributes = array(
-                            'class' => 'nav nav-pills nav-stacked list-group',
+                            'class' => 'nav menu-item nav-stacked list-group',
                             'id'    => 'mylist'
                             );
 
