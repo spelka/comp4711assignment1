@@ -1,19 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Bootstrap Example</title>
+        <title>New Advertisement</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     </head>
     <body>
-
-        <div class="container">
-			<h2>New Advertisement</h2>
+        <div class="container">	
 			<p>Fill in the fields below and click on the "submit" button to view a preview of your posting.</p>
-			<form role="form">
+			<h2>New Advertisement</h2>
+			<form method="post"  action="/create_ad/submit"> 	
 				<div class="form-group">
 					<label for="category">Category (select one):</label>
 					<select class="form-control" id="category">
@@ -27,22 +24,25 @@
 				</div>
 				<div class="form-group">
 					<label for="title">Title:</label>
-					<input type="text" class="form-control" id="title">
+					<input type="text" class="form-control" name="title">
 				</div>
 				<div class="form-group">
 					<label for="price">Price:</label>
-					<input type="password" class="form-control" id="price">
+					<input type="number" step="any" class="form-control" name="price">
 				</div>
 				<div class="form-group">
 					<label for="description">Description:</label>
-					<textarea class="form-control" rows="5" id="description"></textarea>
+					<textarea class="form-control" rows="5" name="description"></textarea>
 				</div>
 				<div class="form-group">
-					<button type="button" class="btn btn-default">Upload Image</button>
+					<button type="button" class="btn">Upload Image</button>
+					<button type="submit" class="btn btn-default" value="Submit">Submit</button>
+					<button type="button" class="btn">Cancel</button>
 				</div>
 			</form>
-			<button type="button" class="btn btn-default">Cancel</button>
-			<button type="submit" class="btn btn-default" method="POST">Submit</button>
 		</div> <!-- form container -->
+		<!-- Javascript -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     </body>
 </html>
