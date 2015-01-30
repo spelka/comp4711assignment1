@@ -37,7 +37,7 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Profile_Management extends Application {
+class User_detail extends Application {
 
 	/**
 	 * Index Page for this controller.
@@ -58,10 +58,10 @@ class Profile_Management extends Application {
 	{
 		//$this->load->view('profile_management');
 
-        $this->data['pagetitle'] = 'Manage Profile';
-        $this->data['pagebody'] = 'profile_management';
+        $this->data['pagetitle'] = 'User Detail';
+        $this->data['pagebody'] = 'user_detail';
 
-        $this->data['activelink']    = base_url('/Profile_Management');
+        $this->data['activelink'] = base_url('/User_detail');
 
         $this->render();
 	}
