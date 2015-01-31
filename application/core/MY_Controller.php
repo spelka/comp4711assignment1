@@ -9,14 +9,16 @@ class Application extends CI_Controller {
     public function __construct() {
         parent::__construct();
 
-        $this->choices['Home']                  = base_url('/');
-        $this->choices['Profile Management']    = base_url('/Profile_Management');
-        $this->choices['Register']              = base_url('/Register');
+        $this->choices['Home']               = base_url('/');
+        $this->choices['Register']           = base_url('/Register');
+        $this->choices['Profile Management'] = base_url('/Profile_management');
+        $this->choices['User Details']       = base_url('/User_detail');
+        $this->choices['Create Ad']          = base_url('/Create_ad');
 
-        $this->data['baseurl']              = base_url('/');  // base url of the site
-        $this->data['page_title']           = 'Welcome';      // our default page
-        $this->data['navbar_title']         = 'TobyCatApps';  // our default title
-        $this->data['navbar_activelink']    = '';
+        $this->data['baseurl']           = base_url('/');  // base url of the site
+        $this->data['page_title']        = 'Welcome';      // our default page
+        $this->data['navbar_title']      = 'TobyCatApps';  // our default title
+        $this->data['navbar_activelink'] = '';
 
         $this->errors = array();
     }
