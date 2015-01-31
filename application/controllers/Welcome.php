@@ -7,6 +7,8 @@ class Welcome extends Application {
     public function index()
     {
         $this->load->model('ads');
+        $this->load->model('categories');
+
         $this->load->helper('card');
         $this->load->helper('grid');
         $this->load->helper('array');
@@ -39,16 +41,18 @@ class Welcome extends Application {
         /////////////////////////
         $this->load->helper('html');
 
-        $list = array(
-                    anchor('', 'Cars', 'title="Cars"'),
-                    anchor('', 'Cats', 'title="Cats"'),
-                    anchor('', 'Dogs', 'title="Dogs"')
-            );
+        $categories = $this->categories->all();
 
-        $attributes = array(
-                            'class' => 'nav menu-item nav-stacked list-group',
-                            'id'    => 'mylist'
-                            );
+        $list = array();
+        foreach ($categories as $category)
+        {
+            $list[] = anchor(
+                '', $category['name'], 'title="'.$category['name'].'"');
+        }
+
+        $attributes = array();
+        $attributes['class'] = 'nav menu-item nav-stacked list-group';
+        $attributes['id']    = 'mylist';
 
         $this->data['categories'] = ul($list, $attributes);
 
