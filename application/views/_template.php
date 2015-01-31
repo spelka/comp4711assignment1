@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <link rel="icon" href="">
 
-    <title>{pagetitle}</title>
+    <title>{page_title}</title>
 
     <link href="assets/css/custom.css" rel="stylesheet">
     <link href="{baseurl}assets/css/bootstrap.css" rel="stylesheet">
@@ -29,17 +29,17 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{baseurl}">{title}</a>
+                <a class="navbar-brand" href="{baseurl}">{navbar_title}</a>
             </div>
             <div id="navbar" class="collapse navbar-collapse">
-                {navbar}
-                {user}
+                {navbar_buttons}
+                {navbar_user}
             </div><!--/.nav-collapse -->
         </div>
     </nav>
 
     <div class="container">
-        {content}
+        {page_body}
     </div><!-- /.container -->
 
 

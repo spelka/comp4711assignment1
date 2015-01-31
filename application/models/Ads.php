@@ -4,59 +4,59 @@ class Ads extends CI_Model {
 
     var $data = array(
         array(
-            'ID'            => '1',
-            'userID'        => '1',
+            'ID'            => 1,
+            'userID'        => 1,
             'uploaded'      => 'January 05, 2014',
             'price'         => '$32.00',
             'flags'         => '0',
-            'description'   => 'description description description',
-            'categoryID'    => '1',
-            'title'         => 'title0'),
+            'description'   => 'Can fit up to 4 human-sized dogs.',
+            'categoryID'    => 1,
+            'title'         => 'Dog House'),
         array(
-            'ID'            => '2',
-            'userID'        => '2',
+            'ID'            => 2,
+            'userID'        => 2,
             'uploaded'      => 'January 05, 2014',
             'price'         => '$32.00',
             'flags'         => '0',
-            'description'   => 'description description description',
-            'categoryID'    => '1',
-            'title'         => 'title1'),
+            'description'   => 'The cake from portal.',
+            'categoryID'    => 2,
+            'title'         => 'Portal Cake'),
         array(
-            'ID'            => '3',
-            'userID'        => '3',
+            'ID'            => 3,
+            'userID'        => 3,
             'uploaded'      => 'January 05, 2014',
             'price'         => '$32.00',
             'flags'         => '0',
-            'description'   => 'description description description',
-            'categoryID'    => '1',
-            'title'         => 'title2'),
+            'description'   => 'Great item to have for camping.',
+            'categoryID'    => 3,
+            'title'         => 'Tent'),
         array(
-            'ID'            => '4',
-            'userID'        => '4',
+            'ID'            => 4,
+            'userID'        => 4,
             'uploaded'      => 'January 05, 2014',
             'price'         => '$32.00',
             'flags'         => '0',
-            'description'   => 'description description description',
-            'categoryID'    => '1',
-            'title'         => 'title3'),
+            'description'   => 'I am not liable for anything you do with this.',
+            'categoryID'    => 4,
+            'title'         => 'Blunt Weapon'),
         array(
-            'ID'            => '5',
-            'userID'        => '5',
+            'ID'            => 5,
+            'userID'        => 5,
             'uploaded'      => 'January 05, 2014',
             'price'         => '$32.00',
             'flags'         => '0',
-            'description'   => 'description description description',
-            'categoryID'    => '1',
-            'title'         => 'title4'),
+            'description'   => 'Can travel through time.',
+            'categoryID'    => 5,
+            'title'         => 'Time Machine'),
         array(
-            'ID'            => '6',
-            'userID'        => '6',
+            'ID'            => 6,
+            'userID'        => 6,
             'uploaded'      => 'January 05, 2014',
             'price'         => '$32.00',
             'flags'         => '0',
-            'description'   => 'description description description',
-            'categoryID'    => '1',
-            'title'         => 'title5')
+            'description'   => 'Lets you see far things like they\'re close by',
+            'categoryID'    => 6,
+            'title'         => 'Trinoculars')
     );
 
     // Constructor
@@ -68,7 +68,7 @@ class Ads extends CI_Model {
     public function get($which) {
         // iterate over the data until we find the one we want
         foreach ($this->data as $record)
-            if ($record['id'] == $which)
+            if ($record['ID'] == $which)
                 return $record;
         return null;
     }
