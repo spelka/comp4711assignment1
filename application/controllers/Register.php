@@ -56,10 +56,10 @@ class Register extends Application {
 	 */
 	public function index()
 	{
-        $this->data['pagetitle'] = 'Register';
-        $this->data['pagebody'] = 'register';
+        $this->data['page_title'] = 'Register';
+        $this->data['page_body'] = 'register';
 
-        $this->data['activelink'] = base_url('/Register');
+        $this->data['navbar_activelink'] = base_url('/Register');
 
         $this->render();
 	}

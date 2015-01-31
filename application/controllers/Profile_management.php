@@ -58,10 +58,10 @@ class Profile_Management extends Application {
 	{
 		//$this->load->view('profile_management');
 
-        $this->data['pagetitle'] = 'Manage Profile';
-        $this->data['pagebody'] = 'profile_management';
+        $this->data['page_title'] = 'Manage Profile';
+        $this->data['page_body'] = 'profile_management';
 
-        $this->data['activelink']    = base_url('/Profile_Management');
+        $this->data['navbar_activelink']    = base_url('/Profile_Management');
 
         $this->render();
 	}

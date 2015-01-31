@@ -1,11 +1,11 @@
 <div>
-    {row}
+    {rows}
     <div class="row">
-        {column}
+        {columns}
         <div class="{columnclass}">
             {content}
         </div>
-        {/column}
+        {/columns}
     </div>
-    {/row}
+    {/rows}
 </div>

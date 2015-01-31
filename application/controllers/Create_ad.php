@@ -22,37 +22,37 @@ class Create_ad extends Application {
      * map to /index.php/welcome/<method_name>
      * @see http://codeigniter.com/user_guide/general/urls.html
      */
-	 
+
 	 public function index()
 	 {
-	    $this->data['activelink']    = base_url('/Create_ad');
-        $this->data['pagetitle'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
-        $this->data['pagebody'] = 'create_ad'; //Change to whatever the ad is later
+	    $this->data['navbar_activelink']    = base_url('/Create_ad');
+        $this->data['page_title'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
+        $this->data['page_body'] = 'create_ad'; //Change to whatever the ad is later
 
         $this->render();
 	 }
-	 
+
 	 public function cancel()
 	 {
 		//$this->load->view("/");
-		$this->data['activelink']    = base_url('/Create_ad');
-        $this->data['pagetitle'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
-        $this->data['pagebody'] = '/'; //Change to whatever the ad is later
+		$this->data['navbar_activelink']    = base_url('/Create_ad');
+        $this->data['page_title'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
+        $this->data['page_body'] = '/'; //Change to whatever the ad is later
 
         $this->render();
 	 }
-	 
+
 	 public function submit()
 	 {
 		//$this->load->view("preview_ad");
-		$this->data['activelink']    = base_url('/Create_ad');
-        $this->data['pagetitle'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
-        $this->data['pagebody'] = 'preview_ad'; //Change to whatever the ad is later
+		$this->data['navbar_activelink']    = base_url('/Create_ad');
+        $this->data['page_title'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
+        $this->data['page_body'] = 'preview_ad'; //Change to whatever the ad is later
 
         $this->render();
 	 }
-	 
-	/**
+
+	/*
 	 * ASSIGNMENT 2 CODE DONE AHEAD OF TIME, DO NOT REMOVE ON PAIN OF TORTURE
 	public function submit()
 	{
