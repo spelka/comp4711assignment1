@@ -18,7 +18,7 @@ function adToCard($CI, $ad)
     $imgrecord = $CI->images->get($cardimgID);
 
     $card = array();
-    $card['cardlink']       = base_url('Ad_Detail/index/'.$ad['ID']);
+    $card['cardlink']       = base_url('Ad_detail/index/'.$ad['ID']);
     $card['cardimgsrc']     = base_url($imgrecord['src']);
     $card['cardimagealt']   = $ad['title'];
     $card['cardtitle']      = $ad['title'];
