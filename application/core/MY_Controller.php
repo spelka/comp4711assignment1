@@ -9,36 +9,33 @@ class Application extends CI_Controller {
     public function __construct() {
         parent::__construct();
 
-        $this->choices['Home']                = base_url('/');
-        $this->choices['Profile Management']  = base_url('/Profile_Management');
-        $this->choices['Register']            = base_url('/Register');
+        $this->choices['Home']               = base_url('/');
+        $this->choices['Register']           = base_url('/Register');
+        $this->choices['Profile Management'] = base_url('/Profile_management');
+        $this->choices['User Details']       = base_url('/User_detail');
+        $this->choices['Create Ad']          = base_url('/Create_ad');
 
-        $this->data['baseurl'] = base_url('/'); // base url of the site
-        $this->data['pagetitle'] = 'Welcome';   // our default page
-        $this->data['title'] = 'TobyCatApps';   // our default title
+        $this->data['baseurl']           = base_url('/');  // base url of the site
+        $this->data['page_title']        = 'Welcome';      // our default page
+        $this->data['navbar_title']      = 'TobyCatApps';  // our default title
+        $this->data['navbar_activelink'] = '';
 
         $this->errors = array();
     }
 
-    /**
-     * Render the page...parameters needed:
-     * @param pagetitle
-     * @param pagebody
-     * @param title
-     */
     protected function render() {
-        $this->data['navbar'] = build_menu_bar($this->choices, $this->data['activelink']);
-        $this->data['content'] = $this->parser->parse($this->data['pagebody'], $this->data, true);
+        $this->data['navbar_buttons'] = build_menu_bar($this->choices, $this->data['navbar_activelink']);
+        $this->data['page_body'] = $this->parser->parse($this->data['page_body'], $this->data, true);
 
         if(true)
         {
-            $this->data['user'] = $this->parser->parse('_login',$this->data,true);
+            $this->data['navbar_user'] = $this->parser->parse('_login',$this->data,true);
         }
         else
         {
-            $this->data['user'] = $this->parser->parse('_logged_in',$this->data,true);            
+            $this->data['navbar_user'] = $this->parser->parse('_logged_in',$this->data,true);
         }
-        
+
         // build the browser page
         $this->data['data'] = $this->data;
         $this->parser->parse('_template', $this->data);

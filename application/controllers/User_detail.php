@@ -109,10 +109,10 @@ class User_detail extends Application {
         $this->data['cards'] = $this->parser->parse('_grid', $rows, true);
 
 
-        $this->data['pagetitle'] = 'User Detail';
-        $this->data['pagebody'] = 'user_detail';
+        $this->data['page_title'] = 'User Detail';
+        $this->data['page_body'] = 'user_detail';
 
-        $this->data['activelink'] = base_url('/User_detail');
+        $this->data['navbar_activelink'] = base_url('/User_detail');
 
         $this->render();
 	}

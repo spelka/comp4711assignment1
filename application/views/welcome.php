@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-3 menu-background">
-        {menu_item}
+        {categories}
     </div>
     <div class="col-md-9">
         {cards}
