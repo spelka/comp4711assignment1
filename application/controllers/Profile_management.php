@@ -53,7 +53,7 @@ class Profile_Management extends Application {
         $this->data['page_title'] = 'Manage Profile';
         $temp = 'temp';
 
-        $this->data['fname'] = makeTextField('Name', 'name', $temp);
+        $this->data['fname'] = makeTextField('Name:', 'name', $temp);
         $this->data['foldpassword'] = makePasswordField('Old Password', 'opswd', $temp);
         $this->data['fnewpassword'] = makePasswordField('New Password', 'npswd', $temp);
         $this->data['fconfirmpassword'] = makePasswordField('Confirm Password', 'cpswd', $temp);
