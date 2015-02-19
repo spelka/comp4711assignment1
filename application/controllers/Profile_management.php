@@ -37,28 +37,30 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/*
+ * Profile Management controller
+ */
 class Profile_Management extends Application {
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see http://codeigniter.com/user_guide/general/urls.html
-	 */
-	public function index()
-	{
-		//$this->load->view('profile_management');
+    function __construct()
+    {
+        parent::__construct();
+        $this->load->helper('formfields');
+    }
 
+    public function index()
+	{
         $this->data['page_title'] = 'Manage Profile';
+        $temp = 'temp';
+
+        $this->data['fname'] = makeTextField('Name:', 'name', $temp);
+        $this->data['foldpassword'] = makePasswordField('Old Password', 'opswd', $temp);
+        $this->data['fnewpassword'] = makePasswordField('New Password', 'npswd', $temp);
+        $this->data['fconfirmpassword'] = makePasswordField('Confirm Password', 'cpswd', $temp);
+        $this->data['femail'] = makeTextField('Email', 'cpswd', $temp);
+        $this->data['fsubmit'] = makeSubmitButton('Submit', 'Submit');
+        $this->data['fcancel'] = makeCancelButton('Cancel');
+
         $this->data['page_body'] = 'profile_management';
 
         $this->data['navbar_activelink']    = base_url('/Profile_Management');
