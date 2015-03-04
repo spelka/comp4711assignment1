@@ -22,7 +22,7 @@ class Create_ad extends Application {
      * map to /index.php/welcome/<method_name>
      * @see http://codeigniter.com/user_guide/general/urls.html
      */
-	 
+
 	 /**
 	 * Constructor, creates the Create_ad class object, and loads the methods found in the formfields_helper
 	 *
@@ -33,8 +33,9 @@ class Create_ad extends Application {
 		$this->load->helper('formfields_helper');
 		$this->load->model('Ads');
 		$this->load->model('Users');
+		$this->load->model('Categories');
     }
-	
+
 	/**
 	 * Responsible for creating the form elements programatically by filling in templates
 	 *
@@ -44,25 +45,22 @@ class Create_ad extends Application {
 		//blank out the error message so it doesn't show up when the form is first loaded
 		$message = '';
 		$this->data['message'] = $message;
-		
-		
-		//specify combo box information
-		$categories = array (
-			'0' => 'Buying',
-			'1' => 'Selling',
-			'2' => 'Free',
-			'3' => 'Jobs',
-			'4' => 'Personals',
-        );
-	 
+
+
+		// create combo box options
+		$categories = $this->Categories->all();
+		foreach ($categories as $key => $value) {
+			$categories[$key] = $categories[$key]->name;
+		}
+
 	    $this->data['navbar_activelink']    = base_url('/Create_ad');
         $this->data['ad_category'] = MakeComboField('category', 'ad_category', '', $categories);
 		$this->data['ad_title'] = MakeTextField('title', 'ad_title', '');
 		$this->data['ad_price'] = MakeTextField('price', 'ad_price', '');
 		$this->data['ad_description'] = MakeTextArea('description', 'ad_description', '');
-		
+
         $this->data['page_body'] = 'create_ad'; //the view that is to be rendered
-		
+
 		$this->data['ad_submit'] = makeSubmitButton('Process Ad', "Submit", 'btn-success');
 
         $this->render();
@@ -88,52 +86,52 @@ class Create_ad extends Application {
 	 {
 		//create empty entry in RDB
 		$record = $this->Ads->create();
-		
+
 		$record->categoryID = $this->input->post('ad_category');	//does the combo box return an INTEGER?, no but the server promotes the INT to a string anyway so this is cool
 		$record->title = $this->input->post('ad_title');
 		$record->price = $this->input->post('ad_price');
 		$record->description = $this->input->post('ad_description');
-		
+
 		$record->flags = 0;			//0 complaints against this post
 		$record->uploaded = date('Y-m-d'); //2015-03-04 yyyy-mm-dd
 		$record->userID = $this->users->get_current_user_id();
-		
-		
+
+
 		// validate user input
 		if ($record->userID == null)
 		{
 			$this->errors[] = 'You must log in to submit a post';
 		}
-		
+
 		if (empty($record->title))
 		{
 			$this->errors[] = 'You must enter a title for your advertisement';
 		}
-		
+
 		if ($record->price < 0)
 		{
 			$this->errors[] = 'You cannot enter a negative amount of money';
 		}
-		
+
 		// redisplay if any errors
 		if (count($this->errors) > 0)
 		{
 			$this->displayError($record);
 			return; // make sure we don't try to save anything
 		}
-		
+
 		//Create a new entry in the RDB
 	    if (empty($record->id))
 		{
 			$this->Ads->add($record);
 	    }
-		else 
+		else
 		{
 			$this->Ads->update($record);
 	    }
 		redirect('/');
 	 }
-	 
+
 	/**
 	*	Re-renders the form to the screen, including any error messages
 	*
@@ -149,9 +147,9 @@ class Create_ad extends Application {
 				$message .= $errors . BR;
 		}
 		$this->data['message'] = $message;
-		
+
 		//the rest of the form
-		
+
 		//specify combo box information
 		$categories = array (
 			'0' => 'Buying',
@@ -160,7 +158,7 @@ class Create_ad extends Application {
 			'3' => 'Jobs',
 			'4' => 'Personals',
         );
-		
+
 		$this->data['navbar_activelink']    = base_url('/Create_ad');
         $this->data['page_title'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
         $this->data['ad_category'] = MakeComboField('category', 'ad_category', $record->categoryID, $categories);
@@ -169,15 +167,15 @@ class Create_ad extends Application {
 		$this->data['ad_description'] = MakeTextArea('description', 'ad_description', $record->description);
 
         $this->data['page_body'] = 'create_ad'; //the view that is to be rendered
-		
+
 		$this->data['ad_submit'] = makeSubmitButton('Process Ad', "Submit", 'btn-success');
-		
+
 		$this->render();
 	}
-	
+
 	/**
 	* Render an advertisement for for editing
-	*	$record: 
+	*	$record:
 	*/
 	public function edit($record)
 	{
@@ -189,7 +187,7 @@ class Create_ad extends Application {
 			'3' => 'Jobs',
 			'4' => 'Personals',
         );
-		
+
 		$this->data['navbar_activelink']    = base_url('/Create_ad');
         $this->data['page_title'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
         $this->data['ad_category'] = MakeComboField('category', 'ad_category', $record->category, $categories);
@@ -198,9 +196,9 @@ class Create_ad extends Application {
 		$this->data['ad_description'] = MakeTextArea('description', 'ad_description', $record->description);
 
         $this->data['page_body'] = 'create_ad'; //the view that is to be rendered
-		
+
 		$this->data['ad_submit'] = makeSubmitButton('Process Ad', "Update", 'btn-success');
-		
+
 		$this->render();
 	}
 }
