@@ -42,7 +42,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class Profile_Management extends Application {
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
         $this->load->helper('formfields');
@@ -51,19 +51,17 @@ class Profile_Management extends Application {
     public function index()
 	{
         $this->data['page_title'] = 'Manage Profile';
-        $temp = 'temp';
+        $this->data['page_body'] = 'profile_management';
+        $this->data['navbar_activelink'] = base_url('/Profile_Management');
 
-        $this->data['fname'] = makeTextField('Name:', 'name', $temp);
-        $this->data['foldpassword'] = makePasswordField('Old Password', 'opswd', $temp);
-        $this->data['fnewpassword'] = makePasswordField('New Password', 'npswd', $temp);
-        $this->data['fconfirmpassword'] = makePasswordField('Confirm Password', 'cpswd', $temp);
-        $this->data['femail'] = makeTextField('Email', 'cpswd', $temp);
+        // Create form fields
+        $this->data['fname'] = makeTextField('Name:', 'name', '');
+        $this->data['foldpassword'] = makePasswordField('Old Password:', 'opswd', '');
+        $this->data['fnewpassword'] = makePasswordField('New Password', 'npswd', '');
+        $this->data['fconfirmpassword'] = makePasswordField('Confirm Password', 'cpswd', '');
+        $this->data['femail'] = makeTextField('Email', 'email', '');
         $this->data['fsubmit'] = makeSubmitButton('Submit', 'Submit');
         $this->data['fcancel'] = makeCancelButton('Cancel');
-
-        $this->data['page_body'] = 'profile_management';
-
-        $this->data['navbar_activelink']    = base_url('/Profile_Management');
 
         $this->render();
 	}
