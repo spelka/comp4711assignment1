@@ -55,6 +55,11 @@ define('FILE_WRITE_MODE', 0666);
 define('DIR_READ_MODE', 0755);
 define('DIR_WRITE_MODE', 0755);
 
+/**
+ * define session keys
+ */
+define('SESSION_UID', 'uid');
+
 /*
 |--------------------------------------------------------------------------
 | File Stream Modes
@@ -120,6 +125,18 @@ define('EXIT_USER_INPUT', 7); // invalid user input
 define('EXIT_DATABASE', 8); // database error
 define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
+
+
+/*
+|--------------------------------------------------------------------------
+| User defined constants
+|--------------------------------------------------------------------------
+|
+| User defined constants
+|
+*/
+
+define('BR', '<br/>');
 
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */
