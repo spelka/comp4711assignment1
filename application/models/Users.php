@@ -28,6 +28,12 @@ class Users extends MY_Model
         }
     }
 
+    /**
+     * returns the id of the currently logged in user; null if no user is logged
+     *   in.
+     *
+     * @return id of the currently logged in user; null if no one is logged in.
+     */
     public function get_current_user_id()
     {
         return $this->session->userdata(SESSION_UID);
