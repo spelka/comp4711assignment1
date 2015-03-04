@@ -93,7 +93,7 @@ class Create_ad extends Application {
 		$record->description = $this->input->post('ad_description');
 
 		$record->flags = 0;			//0 complaints against this post
-		$record->uploaded = date('Y-m-d'); //2015-03-04
+		$record->uploaded = date('Y-m-d'); //2015-03-04 yyyy-mm-dd
 		$record->userID = $this->users->get_current_user_id();
 
 
@@ -123,11 +123,11 @@ class Create_ad extends Application {
 		//Create a new entry in the RDB
 	    if (empty($record->id))
 		{
-			$this->quotes->add($record);
+			$this->Ads->add($record);
 	    }
 		else
 		{
-			$this->quotes->update($record);
+			$this->Ads->update($record);
 	    }
 		redirect('/');
 	 }
@@ -161,7 +161,7 @@ class Create_ad extends Application {
 
 		$this->data['navbar_activelink']    = base_url('/Create_ad');
         $this->data['page_title'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
-        $this->data['ad_category'] = MakeComboField('category', 'ad_category', $record->category);
+        $this->data['ad_category'] = MakeComboField('category', 'ad_category', $record->categoryID, $categories);
 		$this->data['ad_title'] = MakeTextField('title', 'ad_title', $record->title);
 		$this->data['ad_price'] = MakeTextField('price', 'ad_price', $record->price);
 		$this->data['ad_description'] = MakeTextArea('description', 'ad_description', $record->description);
