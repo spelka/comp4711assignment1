@@ -163,7 +163,7 @@ class Create_ad extends Application {
 		
 		$this->data['navbar_activelink']    = base_url('/Create_ad');
         $this->data['page_title'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
-        $this->data['ad_category'] = MakeComboField('category', 'ad_category', $record->category);
+        $this->data['ad_category'] = MakeComboField('category', 'ad_category', $record->categoryID, $categories);
 		$this->data['ad_title'] = MakeTextField('title', 'ad_title', $record->title);
 		$this->data['ad_price'] = MakeTextField('price', 'ad_price', $record->price);
 		$this->data['ad_description'] = MakeTextArea('description', 'ad_description', $record->description);
