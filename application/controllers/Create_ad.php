@@ -31,6 +31,8 @@ class Create_ad extends Application {
     {
 		parent::__construct();
 		$this->load->helper('formfields_helper');
+		$this->load->model('Ads');
+		$this->load->model('Users');
     }
 	
 	/**
@@ -39,17 +41,21 @@ class Create_ad extends Application {
 	 */
 	 public function index()
 	 {
-		//specify combobox information
+		//blank out the error message so it doesn't show up when the form is first loaded
+		$message = '';
+		$this->data['message'] = $message;
+		
+		
+		//specify combo box information
 		$categories = array (
 			'0' => 'Buying',
 			'1' => 'Selling',
 			'2' => 'Free',
 			'3' => 'Jobs',
-			'4' => 'Personals',)
+			'4' => 'Personals',
         );
 	 
 	    $this->data['navbar_activelink']    = base_url('/Create_ad');
-        $this->data['page_title'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
         $this->data['ad_category'] = MakeComboField('category', 'ad_category', '', $categories);
 		$this->data['ad_title'] = MakeTextField('title', 'ad_title', '');
 		$this->data['ad_price'] = MakeTextField('price', 'ad_price', '');
@@ -80,15 +86,25 @@ class Create_ad extends Application {
 	 */
 	 public function submit()
 	 {
-		//get variables from the input
+		//create empty entry in RDB
 		$record = $this->Ads->create();
 		
-		$record->category = $this->input->post('ad_category');
+		$record->categoryID = $this->input->post('ad_category');	//does the combo box return an INTEGER?, no but the server promotes the INT to a string anyway so this is cool
 		$record->title = $this->input->post('ad_title');
 		$record->price = $this->input->post('ad_price');
 		$record->description = $this->input->post('ad_description');
 		
+		$record->flags = 0;			//0 complaints against this post
+		$record->uploaded = date('Y-m-d'); //2015-03-04
+		$record->userID = $this->users->get_current_user_id();
+		
+		
 		// validate user input
+		if ($record->userID == null)
+		{
+			$this->errors[] = 'You must log in to submit a post';
+		}
+		
 		if (empty($record->title))
 		{
 			$this->errors[] = 'You must enter a title for your advertisement';
@@ -105,7 +121,6 @@ class Create_ad extends Application {
 			$this->displayError($record);
 			return; // make sure we don't try to save anything
 		}
-		
 		
 		//Create a new entry in the RDB
 	    if (empty($record->id))
@@ -137,13 +152,13 @@ class Create_ad extends Application {
 		
 		//the rest of the form
 		
-		//specify combobox information
+		//specify combo box information
 		$categories = array (
 			'0' => 'Buying',
 			'1' => 'Selling',
 			'2' => 'Free',
 			'3' => 'Jobs',
-			'4' => 'Personals',)
+			'4' => 'Personals',
         );
 		
 		$this->data['navbar_activelink']    = base_url('/Create_ad');
@@ -166,17 +181,18 @@ class Create_ad extends Application {
 	*/
 	public function edit($record)
 	{
+		//specify combo box information
 		$categories = array (
 			'0' => 'Buying',
 			'1' => 'Selling',
 			'2' => 'Free',
 			'3' => 'Jobs',
-			'4' => 'Personals',)
+			'4' => 'Personals',
         );
 		
 		$this->data['navbar_activelink']    = base_url('/Create_ad');
         $this->data['page_title'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
-        $this->data['ad_category'] = MakeComboField('category', 'ad_category', $record->category);
+        $this->data['ad_category'] = MakeComboField('category', 'ad_category', $record->category, $categories);
 		$this->data['ad_title'] = MakeTextField('title', 'ad_title', $record->title);
 		$this->data['ad_price'] = MakeTextField('price', 'ad_price', $record->price);
 		$this->data['ad_description'] = MakeTextArea('description', 'ad_description', $record->description);
