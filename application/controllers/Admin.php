@@ -4,16 +4,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Admin extends Application {
 
-	 public function index()
-	 {
+		public function __construct()
+		{
+				parent::__construct();
 				$this->load->helper('url');
+				$this->load->helper('form');
 
 				$this->load->model('users');
 				$this->load->model('ads');
-				$this->load->model('categories');
+		}
 
-        $this->data['page_title'] = '';
-        $this->data['page_body'] = 'admin.php';
+		public function index()
+		{
+		    $this->data['page_title'] = '';
+		    $this->data['page_body'] = 'admin.php';
 
 				//Create Ad list
 				$ads = $this->ads->all();
@@ -24,6 +28,7 @@ class Admin extends Application {
 				{
 						$adData = array();
 
+						$adData['delete']			= anchor(base_url('/Admin/deletead/'.$ad->ID), "Delete", 'title="'.$ad->ID.'"');
 						$adData['edit']				= anchor(base_url('/editAd/'.$ad->ID), "Edit", 'title="'.$ad->ID.'"');
 						$adData['ID'] 				= $ad->ID;
 						$adData['userID']     = $ad->userID;
@@ -48,7 +53,8 @@ class Admin extends Application {
 				{
 						$userData = array();
 
-						$userData['edit']					= anchor(base_url('/editPost/'.$ad->ID), "Edit", 'title="'.$ad->ID.'"');
+						$userData['delete']			  = anchor(base_url('/Admin/deleteuser/'.$user->ID), "Delete", 'title="'.$user->ID.'"');
+						$userData['edit']					= anchor(base_url('/editUser/'.$user->ID), "Edit", 'title="'.$user->ID.'"');
 						$userData['ID'] 					= $user->ID;
 						$userData['type']     		= $user->type;
 						$userData['username']   	= $user->username;
@@ -59,6 +65,24 @@ class Admin extends Application {
 
 				$this->data['userlist'] = $userDataArray;
 
-        $this->render();
-	 }
+		    $this->render();
+		}
+
+		public function deletead($adID)
+		{
+				$this->ads->delete($adID);
+				redirect('/Admin');
+		}
+
+		public function deleteuser($userID)
+		{
+				$adArray = $this->ads->some('userID',$userID);
+				foreach($adArray as $ad)
+				{
+					 $this->ads->delete($ad->ID);
+				}
+
+				$this->users->delete($userID);
+				redirect('/Admin');
+		}
 }

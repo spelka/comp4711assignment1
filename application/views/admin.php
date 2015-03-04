@@ -3,6 +3,7 @@
   <table class="table">
     <tr>
       <th></th>
+      <th></th>
       <th>ID</th>
       <th>userID</th>
       <th>uploaded</th>
@@ -15,6 +16,7 @@
 
     {adlist}
     <tr>
+      <td>{delete}</td>
       <td>{edit}</td>
       <td>{ID}</td>
       <td>{userID}</td>
@@ -34,6 +36,7 @@
   <table class="table">
     <tr>
       <th></th>
+      <th></th>
       <th>ID</th>
       <th>type</th>
       <th>username</th>
@@ -43,6 +46,7 @@
 
     {userlist}
     <tr>
+      <td>{delete}</td>
       <td>{edit}</td>
       <td>{ID}</td>
       <td>{type}</td>
