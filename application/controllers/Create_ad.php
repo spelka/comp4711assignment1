@@ -39,12 +39,25 @@ class Create_ad extends Application {
 	 */
 	 public function index()
 	 {
+		//specify combobox information
+		$categories = array (
+			'0' => 'Buying',
+			'1' => 'Selling',
+			'2' => 'Free',
+			'3' => 'Jobs',
+			'4' => 'Personals',)
+        );
+	 
 	    $this->data['navbar_activelink']    = base_url('/Create_ad');
         $this->data['page_title'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
-        $this->data['ad_category'] = MakeComboField();
-		$this->data['ad_title'] = MakeTextField();
-		$this->data['ad_price'] = MakeTextField();
-		$this->data['ad_description'] = MakeTextArea();
+        $this->data['ad_category'] = MakeComboField('category', 'ad_category', '', $categories);
+		$this->data['ad_title'] = MakeTextField('title', 'ad_title', '');
+		$this->data['ad_price'] = MakeTextField('price', 'ad_price', '');
+		$this->data['ad_description'] = MakeTextArea('description', 'ad_description', '');
+		
+        $this->data['page_body'] = 'create_ad'; //the view that is to be rendered
+		
+		$this->data['ad_submit'] = makeSubmitButton('Process Ad', "Submit", 'btn-success');
 
         $this->render();
 	 }
@@ -89,7 +102,7 @@ class Create_ad extends Application {
 		// redisplay if any errors
 		if (count($this->errors) > 0)
 		{
-			$this->present($record);
+			$this->displayError($record);
 			return; // make sure we don't try to save anything
 		}
 		
@@ -107,12 +120,72 @@ class Create_ad extends Application {
 	 }
 	 
 	/**
-	*	Rerenders the form to the screen, including any error messages
+	*	Re-renders the form to the screen, including any error messages
 	*
 	*/
-	public function present()
+	public function displayError($record)
 	{
+		//error codes at the top
+		// format any errors
+		$message = '';
+		if (count($this->errors) > 0)
+		{
+			foreach ($this->errors as $errors)
+				$message .= $errors . BR;
+		}
+		$this->data['message'] = $message;
 		
+		//the rest of the form
+		
+		//specify combobox information
+		$categories = array (
+			'0' => 'Buying',
+			'1' => 'Selling',
+			'2' => 'Free',
+			'3' => 'Jobs',
+			'4' => 'Personals',)
+        );
+		
+		$this->data['navbar_activelink']    = base_url('/Create_ad');
+        $this->data['page_title'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
+        $this->data['ad_category'] = MakeComboField('category', 'ad_category', $record->category);
+		$this->data['ad_title'] = MakeTextField('title', 'ad_title', $record->title);
+		$this->data['ad_price'] = MakeTextField('price', 'ad_price', $record->price);
+		$this->data['ad_description'] = MakeTextArea('description', 'ad_description', $record->description);
+
+        $this->data['page_body'] = 'create_ad'; //the view that is to be rendered
+		
+		$this->data['ad_submit'] = makeSubmitButton('Process Ad', "Submit", 'btn-success');
+		
+		$this->render();
+	}
+	
+	/**
+	* Render an advertisement for for editing
+	*	$record: 
+	*/
+	public function edit($record)
+	{
+		$categories = array (
+			'0' => 'Buying',
+			'1' => 'Selling',
+			'2' => 'Free',
+			'3' => 'Jobs',
+			'4' => 'Personals',)
+        );
+		
+		$this->data['navbar_activelink']    = base_url('/Create_ad');
+        $this->data['page_title'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
+        $this->data['ad_category'] = MakeComboField('category', 'ad_category', $record->category);
+		$this->data['ad_title'] = MakeTextField('title', 'ad_title', $record->title);
+		$this->data['ad_price'] = MakeTextField('price', 'ad_price', $record->price);
+		$this->data['ad_description'] = MakeTextArea('description', 'ad_description', $record->description);
+
+        $this->data['page_body'] = 'create_ad'; //the view that is to be rendered
+		
+		$this->data['ad_submit'] = makeSubmitButton('Process Ad', "Update", 'btn-success');
+		
+		$this->render();
 	}
 }
 
