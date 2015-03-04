@@ -87,7 +87,6 @@ class Register extends Application {
         // create a record to add to the database
         $addRecord = $this->users->create();
 
-        $addRecord->ID = $this->users->highest() + 1;
         $addRecord->type = 0;
         $addRecord->username = $record->fusername;
         $addRecord->password = $record->fpassword;

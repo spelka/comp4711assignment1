@@ -46,6 +46,7 @@ class Profile_Management extends Application {
     {
         parent::__construct();
         $this->load->helper('formfields');
+        $this->load->model('users');
     }
 
     public function index()
@@ -54,12 +55,15 @@ class Profile_Management extends Application {
         $this->data['page_body'] = 'profile_management';
         $this->data['navbar_activelink'] = base_url('/Profile_Management');
 
+        $highestid = $this->users->highest();
+        $record = $this->users->get($highestid);
+
         // Create form fields
-        $this->data['fname'] = makeTextField('Name:', 'name', '');
+        $this->data['fname'] = makeTextField('Name:', 'name', $record->displayname);
         $this->data['foldpassword'] = makePasswordField('Old Password:', 'opswd', '');
-        $this->data['fnewpassword'] = makePasswordField('New Password', 'npswd', '');
-        $this->data['fconfirmpassword'] = makePasswordField('Confirm Password', 'cpswd', '');
-        $this->data['femail'] = makeTextField('Email', 'email', '');
+        $this->data['fnewpassword'] = makePasswordField('New Password:', 'npswd', '');
+        $this->data['fconfirmpassword'] = makePasswordField('Confirm Password:', 'cpswd', '');
+        $this->data['femail'] = makeTextField('Email:', 'email', $record->email);
         $this->data['fsubmit'] = makeSubmitButton('Submit', 'Submit');
         $this->data['fcancel'] = makeCancelButton('Cancel');
 
