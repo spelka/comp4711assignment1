@@ -39,75 +39,62 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class User_detail extends Application {
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see http://codeigniter.com/user_guide/general/urls.html
-	 */
-	public function index()
-	{
-		        // generate cards
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->helper('formfields');
+        $this->load->model('users');
         $this->load->model('ads');
+        $this->load->model('categories');
+
+        $this->load->helper('card');
+        $this->load->helper('grid');
+        $this->load->helper('array');
+    }
+
+    private function generateCards()
+    {
+        // Need to chage this for user ads instead of all
         $ads = $this->ads->all();
 
+        // putting ads onto the card views
         $cards = array();
-
         foreach($ads as $ad)
         {
-            $card = array();
-            $card['cardlink']       = base_url('Ad_Detail');
-            $card['cardimgsrc']     = base_url('assets/img/portfolio/cabin.png');
-            $card['cardimagealt']   = $ad['title'];
-            $card['cardtitle']      = $ad['title'];
-            $card['cardcaption']    = $ad['description'];
-            $cards[] = $this->parser->parse('_card',$card,true);
+            $card = adToCard($this, $ad);   // convert ad into a card object
+            $cards[] = $this->parser->parse('_card', $card, true);
         }
 
-        // generate columns, with the cards inside them
-        $columns = array();
-        while(count($cards) > 0)
-        {
-            $column = array();
-            $column['columnclass']  = 'col-sm-4';
-            $column['content']      = array_pop($cards);
-            $columns[] = $column;
-        }
+        // put cards into columns
+        $columns = makeColumns('col-sm-4', $cards);
 
         // generate rows with the columns inside them (3 columns per row)
-        $rows = array();
-        $rows['row'] = array();
-        while(count($columns) > 0)
-        {
-            $row = array();
-            $row['column'] = array();
-            for($count = 0; $count < 3; $count++)
-            {
-                if(count($columns) > 0)
-                {
-                    $row['column'][] = array_pop($columns);
-                }
-                else
-                {
-                    break;
-                }
-            }
-            $rows['row'][] = $row;
-        }
+        $grid = array();
+        $grid['rows'] = makeGroups(3, 'columns', $columns);
 
         // generate the grid
-        // $this->data['cards'] = $cards[0];
-        $this->data['cards'] = $this->parser->parse('_grid', $rows, true);
+        $this->data['cards'] = $this->parser->parse('_grid', $grid, true);
+    }
 
+    private function getUserDetails($id)
+    {
+        $record = $this->users->get($id);
+        $this->data['username'] = $record->username;
+        $this->data['displayname'] = $record->displayname;
+        $this->data['email'] = $record->email;
+    }
+
+    public function index()
+	{
+        // Get user details
+        $id = $this->users->get_current_user_id();
+        if($id != null)
+            $this->getUserDetails($id);
+        else
+            redirect('/register');
+
+        // Get user ads
+        $this->generateCards();
 
         $this->data['page_title'] = 'User Detail';
         $this->data['page_body'] = 'user_detail';
