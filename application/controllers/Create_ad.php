@@ -22,16 +22,49 @@ class Create_ad extends Application {
      * map to /index.php/welcome/<method_name>
      * @see http://codeigniter.com/user_guide/general/urls.html
      */
-
+	 
+	 /**
+	 * Constructor, creates the Create_ad class object, and loads the methods found in the formfields_helper
+	 *
+	 */
+	function __construct()
+    {
+		parent::__construct();
+		$this->load->helper('formfields_helper');
+    }
+	
+	/**
+	 * Responsible for creating the form elements programatically by filling in templates
+	 *
+	 */
 	 public function index()
 	 {
+		//specify combobox information
+		$categories = array (
+			'0' => 'Buying',
+			'1' => 'Selling',
+			'2' => 'Free',
+			'3' => 'Jobs',
+			'4' => 'Personals',)
+        );
+	 
 	    $this->data['navbar_activelink']    = base_url('/Create_ad');
         $this->data['page_title'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
-        $this->data['page_body'] = 'create_ad'; //Change to whatever the ad is later
+        $this->data['ad_category'] = MakeComboField('category', 'ad_category', '', $categories);
+		$this->data['ad_title'] = MakeTextField('title', 'ad_title', '');
+		$this->data['ad_price'] = MakeTextField('price', 'ad_price', '');
+		$this->data['ad_description'] = MakeTextArea('description', 'ad_description', '');
+		
+        $this->data['page_body'] = 'create_ad'; //the view that is to be rendered
+		
+		$this->data['ad_submit'] = makeSubmitButton('Process Ad', "Submit", 'btn-success');
 
         $this->render();
 	 }
 
+	 /**
+	 * Takes the user back to the main page, and discards all changes to fields
+	 */
 	 public function cancel()
 	 {
 		//$this->load->view("/");
@@ -42,23 +75,118 @@ class Create_ad extends Application {
         $this->render();
 	 }
 
+	 /**
+	 *	Get variables from the form, validate them, and submit them to the RDB
+	 */
 	 public function submit()
 	 {
-		//$this->load->view("preview_ad");
+		//get variables from the input
+		$record = $this->Ads->create();
+		
+		$record->category = $this->input->post('ad_category');
+		$record->title = $this->input->post('ad_title');
+		$record->price = $this->input->post('ad_price');
+		$record->description = $this->input->post('ad_description');
+		
+		// validate user input
+		if (empty($record->title))
+		{
+			$this->errors[] = 'You must enter a title for your advertisement';
+		}
+		
+		if ($record->price < 0)
+		{
+			$this->errors[] = 'You cannot enter a negative amount of money';
+		}
+		
+		// redisplay if any errors
+		if (count($this->errors) > 0)
+		{
+			$this->displayError($record);
+			return; // make sure we don't try to save anything
+		}
+		
+		
+		//Create a new entry in the RDB
+	    if (empty($record->id))
+		{
+			$this->quotes->add($record);
+	    }
+		else 
+		{
+			$this->quotes->update($record);
+	    }
+		redirect('/');
+	 }
+	 
+	/**
+	*	Re-renders the form to the screen, including any error messages
+	*
+	*/
+	public function displayError($record)
+	{
+		//error codes at the top
+		// format any errors
+		$message = '';
+		if (count($this->errors) > 0)
+		{
+			foreach ($this->errors as $errors)
+				$message .= $errors . BR;
+		}
+		$this->data['message'] = $message;
+		
+		//the rest of the form
+		
+		//specify combobox information
+		$categories = array (
+			'0' => 'Buying',
+			'1' => 'Selling',
+			'2' => 'Free',
+			'3' => 'Jobs',
+			'4' => 'Personals',)
+        );
+		
 		$this->data['navbar_activelink']    = base_url('/Create_ad');
         $this->data['page_title'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
-        $this->data['page_body'] = 'preview_ad'; //Change to whatever the ad is later
+        $this->data['ad_category'] = MakeComboField('category', 'ad_category', $record->category);
+		$this->data['ad_title'] = MakeTextField('title', 'ad_title', $record->title);
+		$this->data['ad_price'] = MakeTextField('price', 'ad_price', $record->price);
+		$this->data['ad_description'] = MakeTextArea('description', 'ad_description', $record->description);
 
-        $this->render();
-	 }
-
-	/*
-	 * ASSIGNMENT 2 CODE DONE AHEAD OF TIME, DO NOT REMOVE ON PAIN OF TORTURE
-	public function submit()
-	{
-		echo var_dump($_POST);
+        $this->data['page_body'] = 'create_ad'; //the view that is to be rendered
+		
+		$this->data['ad_submit'] = makeSubmitButton('Process Ad', "Submit", 'btn-success');
+		
+		$this->render();
 	}
+	
+	/**
+	* Render an advertisement for for editing
+	*	$record: 
 	*/
+	public function edit($record)
+	{
+		$categories = array (
+			'0' => 'Buying',
+			'1' => 'Selling',
+			'2' => 'Free',
+			'3' => 'Jobs',
+			'4' => 'Personals',)
+        );
+		
+		$this->data['navbar_activelink']    = base_url('/Create_ad');
+        $this->data['page_title'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
+        $this->data['ad_category'] = MakeComboField('category', 'ad_category', $record->category);
+		$this->data['ad_title'] = MakeTextField('title', 'ad_title', $record->title);
+		$this->data['ad_price'] = MakeTextField('price', 'ad_price', $record->price);
+		$this->data['ad_description'] = MakeTextArea('description', 'ad_description', $record->description);
+
+        $this->data['page_body'] = 'create_ad'; //the view that is to be rendered
+		
+		$this->data['ad_submit'] = makeSubmitButton('Process Ad', "Update", 'btn-success');
+		
+		$this->render();
+	}
 }
 
 /* End of file welcome.php */
