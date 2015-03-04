@@ -95,7 +95,7 @@ class Create_ad extends Application {
 		$record->description = $this->input->post('ad_description');
 		
 		$record->flags = 0;			//0 complaints against this post
-		$record->uploaded = date('Y-m-d'); //2015-03-04
+		$record->uploaded = date('Y-m-d'); //2015-03-04 yyyy-mm-dd
 		$record->userID = $this->users->get_current_user_id();
 		
 		
@@ -125,11 +125,11 @@ class Create_ad extends Application {
 		//Create a new entry in the RDB
 	    if (empty($record->id))
 		{
-			$this->quotes->add($record);
+			$this->Ads->add($record);
 	    }
 		else 
 		{
-			$this->quotes->update($record);
+			$this->Ads->update($record);
 	    }
 		redirect('/');
 	 }
