@@ -14,4 +14,4 @@
         {fcancel}
     </form>
 </div><!-- /.container -->
-<script src="assets/js/profileManagement.js"></script>
+<script src="{baseurl}assets/js/profileManagement.js"></script>

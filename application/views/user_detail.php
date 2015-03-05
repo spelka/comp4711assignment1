@@ -20,4 +20,13 @@
         <h4>Reviews</h4>
         {reviews}
     </div>
+    <div class="rating">
+        <span id="5" class="glyphicon glyphicon-star"></span>
+        <span id="4" class="glyphicon glyphicon-star"></span>
+        <span id="3" class="glyphicon glyphicon-star"></span>
+        <span id="2" class="glyphicon glyphicon-star"></span>
+        <span id="1" class="glyphicon glyphicon-star"></span>
+        <!--<span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>-->
+    </div>
 </div><!-- /.container -->
+
