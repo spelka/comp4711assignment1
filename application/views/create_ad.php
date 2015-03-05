@@ -6,6 +6,7 @@
 		{ad_price}
 		{ad_description}
 		{ad_submit}
+		{ad_cancel}
 	</form>
-</div> 
+</div>
 
