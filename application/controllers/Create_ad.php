@@ -7,138 +7,94 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 class Create_ad extends Application {
 
-    /**
-     * Index Page for this controller.
-     *
-     * Maps to the following URL
-     *         http://example.com/index.php/welcome
-     *    - or -
-     *         http://example.com/index.php/welcome/index
-     *    - or -
-     * Since this controller is set as the default controller in
-     * config/routes.php, it's displayed at http://example.com/
-     *
-     * So any other public methods not prefixed with an underscore will
-     * map to /index.php/welcome/<method_name>
-     * @see http://codeigniter.com/user_guide/general/urls.html
-     */
-	 
 	 /**
 	 * Constructor, creates the Create_ad class object, and loads the methods found in the formfields_helper
 	 *
 	 */
 	function __construct()
-    {
+	{
 		parent::__construct();
 		$this->load->helper('formfields_helper');
 		$this->load->model('Ads');
 		$this->load->model('Users');
-    }
-	
+		$this->load->model('Categories');
+		$this->load->model('Adimages');
+	}
+
 	/**
 	 * Responsible for creating the form elements programatically by filling in templates
 	 *
 	 */
 	 public function index()
 	 {
-		//blank out the error message so it doesn't show up when the form is first loaded
-		$message = '';
-		$this->data['message'] = $message;
-		
-		
-		//specify combo box information
-		$categories = array (
-			'0' => 'Buying',
-			'1' => 'Selling',
-			'2' => 'Free',
-			'3' => 'Jobs',
-			'4' => 'Personals',
-        );
-	 
-	    $this->data['navbar_activelink']    = base_url('/Create_ad');
-        $this->data['ad_category'] = MakeComboField('category', 'ad_category', '', $categories);
-		$this->data['ad_title'] = MakeTextField('title', 'ad_title', '');
-		$this->data['ad_price'] = MakeTextField('price', 'ad_price', '');
-		$this->data['ad_description'] = MakeTextArea('description', 'ad_description', '');
-		
-        $this->data['page_body'] = 'create_ad'; //the view that is to be rendered
-		
-		$this->data['ad_submit'] = makeSubmitButton('Process Ad', "Submit", 'btn-success');
-
-        $this->render();
-	 }
-
-	 /**
-	 * Takes the user back to the main page, and discards all changes to fields
-	 */
-	 public function cancel()
-	 {
-		//$this->load->view("/");
-		$this->data['navbar_activelink']    = base_url('/Create_ad');
-        $this->data['page_title'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
-        $this->data['page_body'] = '/'; //Change to whatever the ad is later
-
-        $this->render();
+		$newAd = $this->Ads->create();
+		$this->present($newAd);
 	 }
 
 	 /**
 	 *	Get variables from the form, validate them, and submit them to the RDB
 	 */
-	 public function submit()
-	 {
+	public function submit()
+	{
 		//create empty entry in RDB
-		$record = $this->Ads->create();
-		
-		$record->categoryID = $this->input->post('ad_category');	//does the combo box return an INTEGER?, no but the server promotes the INT to a string anyway so this is cool
-		$record->title = $this->input->post('ad_title');
-		$record->price = $this->input->post('ad_price');
-		$record->description = $this->input->post('ad_description');
-		
-		$record->flags = 0;			//0 complaints against this post
-		$record->uploaded = date('Y-m-d'); //2015-03-04 yyyy-mm-dd
-		$record->userID = $this->users->get_current_user_id();
-		
-		
+		$newAd = $this->Ads->create();
+
+		$newAd->categoryID  = $this->input->post('ad_category');
+		$newAd->title       = $this->input->post('ad_title');
+		$newAd->price       = $this->input->post('ad_price');
+		$newAd->description = $this->input->post('ad_description');
+
+		$newAd->flags = 0;			//0 complaints against this post
+		$newAd->uploaded = date('Y-m-d'); //2015-03-04 yyyy-mm-dd
+		$newAd->userID = $this->users->get_current_user_id();
+
+
 		// validate user input
-		if ($record->userID == null)
+		if ($newAd->userID == null)
 		{
 			$this->errors[] = 'You must log in to submit a post';
 		}
-		
-		if (empty($record->title))
+
+		if (empty($newAd->title))
 		{
 			$this->errors[] = 'You must enter a title for your advertisement';
 		}
-		
-		if ($record->price < 0)
+
+		if ($newAd->price < 0)
 		{
 			$this->errors[] = 'You cannot enter a negative amount of money';
 		}
-		
+
 		// redisplay if any errors
 		if (count($this->errors) > 0)
 		{
-			$this->displayError($record);
+			$this->present($newAd);
 			return; // make sure we don't try to save anything
 		}
-		
+
 		//Create a new entry in the RDB
-	    if (empty($record->id))
+		if (empty($newAd->ID))
 		{
-			$this->Ads->add($record);
-	    }
-		else 
+			$this->Ads->add($newAd);
+
+			// associate the ad with the default image
+			$adimagerow = $this->Adimages->create();
+			$adimagerow->adID	= $this->Ads->highest();
+			$adimagerow->imageID = 7;
+			$this->Adimages->add($adimagerow);
+		}
+		else
 		{
-			$this->Ads->update($record);
-	    }
+			$this->Ads->update($newAd);
+		}
 		redirect('/');
 	 }
-	 
+
 	/**
 	*	Re-renders the form to the screen, including any error messages
 	*
 	*/
-	public function displayError($record)
+	public function present($record)
 	{
 		//error codes at the top
 		// format any errors
@@ -149,61 +105,31 @@ class Create_ad extends Application {
 				$message .= $errors . BR;
 		}
 		$this->data['message'] = $message;
-		
-		//the rest of the form
-		
-		//specify combo box information
-		$categories = array (
-			'0' => 'Buying',
-			'1' => 'Selling',
-			'2' => 'Free',
-			'3' => 'Jobs',
-			'4' => 'Personals',
-        );
-		
-		$this->data['navbar_activelink']    = base_url('/Create_ad');
-        $this->data['page_title'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
-        $this->data['ad_category'] = MakeComboField('category', 'ad_category', $record->categoryID, $categories);
+
+
+		// create combo box options
+		$categories = $this->Categories->all();
+		$combobox_entries = array();
+		foreach ($categories as $key => $value) {
+			$combobox_entries[$categories[$key]->ID] = $categories[$key]->name;
+		}
+
+		// inject form parameters
+		$this->data['navbar_activelink'] = base_url('/Create_ad');
+		$this->data['page_title'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
+		$this->data['ad_category'] = MakeComboField('category', 'ad_category', $record->categoryID, $combobox_entries);
 		$this->data['ad_title'] = MakeTextField('title', 'ad_title', $record->title);
 		$this->data['ad_price'] = MakeTextField('price', 'ad_price', $record->price);
 		$this->data['ad_description'] = MakeTextArea('description', 'ad_description', $record->description);
 
-        $this->data['page_body'] = 'create_ad'; //the view that is to be rendered
-		
+		$this->data['page_body'] = 'create_ad'; //the view that is to be rendered
+
 		$this->data['ad_submit'] = makeSubmitButton('Process Ad', "Submit", 'btn-success');
-		
-		$this->render();
-	}
-	
-	/**
-	* Render an advertisement for for editing
-	*	$record: 
-	*/
-	public function edit($record)
-	{
-		//specify combo box information
-		$categories = array (
-			'0' => 'Buying',
-			'1' => 'Selling',
-			'2' => 'Free',
-			'3' => 'Jobs',
-			'4' => 'Personals',
-        );
-		
-		$this->data['navbar_activelink']    = base_url('/Create_ad');
-        $this->data['page_title'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
-        $this->data['ad_category'] = MakeComboField('category', 'ad_category', $record->category, $categories);
-		$this->data['ad_title'] = MakeTextField('title', 'ad_title', $record->title);
-		$this->data['ad_price'] = MakeTextField('price', 'ad_price', $record->price);
-		$this->data['ad_description'] = MakeTextArea('description', 'ad_description', $record->description);
+		$this->data['ad_cancel'] = makeCancelButton('Cancel');
 
-        $this->data['page_body'] = 'create_ad'; //the view that is to be rendered
-		
-		$this->data['ad_submit'] = makeSubmitButton('Process Ad', "Update", 'btn-success');
-		
 		$this->render();
 	}
 }
 
-/* End of file welcome.php */
-/* Location: ./application/controllers/Welcome.php */
+/* End of file Create_ad.php */
+/* Location: ./application/controllers/Create_ad.php */

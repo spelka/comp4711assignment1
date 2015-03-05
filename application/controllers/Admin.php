@@ -4,23 +4,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Admin extends Application {
 
-	 public function index()
-	 {
+		public function __construct()
+		{
+				parent::__construct();
+				$this->load->helper('url');
+				$this->load->helper('form');
+
 				$this->load->model('users');
 				$this->load->model('ads');
-				$this->load->model('categories');
+		}
 
-        $this->data['page_title'] = '';
-        $this->data['page_body'] = 'admin.php';
-				$this->data['adlist'] = $this->ads->all();
+		public function index()
+		{
+		    $this->data['page_title'] = '';
+		    $this->data['page_body'] = 'admin.php';
 
-
-
-				$this->data['userlist'] = $this->users->all();
-				/*
-
-        $this->load->helper('html');
-
+				//Create Ad list
 				$ads = $this->ads->all();
 
 				$adDataArray = array();
@@ -29,6 +28,8 @@ class Admin extends Application {
 				{
 						$adData = array();
 
+						$adData['delete']			= anchor(base_url('/Admin/deletead/'.$ad->ID), "Delete", 'title="'.$ad->ID.'"');
+						$adData['edit']				= anchor(base_url('/editAd/'.$ad->ID), "Edit", 'title="'.$ad->ID.'"');
 						$adData['ID'] 				= $ad->ID;
 						$adData['userID']     = $ad->userID;
 						$adData['uploaded']   = $ad->uploaded;
@@ -41,90 +42,47 @@ class Admin extends Application {
 						array_push($adDataArray, $adData);
 				}
 
-				$adList = array();
-				foreach ($adDataArray as $adData)
+				$this->data['adlist'] = $adDataArray;
+
+				//Create User List
+				$users = $this->users->all();
+
+				$userDataArray = array();
+
+				foreach($users as $user)
 				{
-						$adList[] = anchor('', $adData['ID'], 'title="'.$adData['ID'].'"');
+						$userData = array();
+
+						$userData['delete']			  = anchor(base_url('/Admin/deleteuser/'.$user->ID), "Delete", 'title="'.$user->ID.'"');
+						$userData['edit']					= anchor(base_url('/editUser/'.$user->ID), "Edit", 'title="'.$user->ID.'"');
+						$userData['ID'] 					= $user->ID;
+						$userData['type']     		= $user->type;
+						$userData['username']   	= $user->username;
+						$userData['email']      	= $user->email;
+						$userData['displayname']  = $user->displayname;
+						array_push($userDataArray, $userData);
 				}
 
-				$attributes = array();
-				$attributes['class'] = 'list-group';
-				$attributes['id']    = 'adList';
+				$this->data['userlist'] = $userDataArray;
 
-				$this->data['adlist'] = ul($adList, $attributes);
-*/
-/*
-        $adDataArray = array(
-            array(
-                'ID'                => 1,
-                'parentCategoryID'  => 0,
-                'name'              => 'Pets' ),
-            array(
-                'ID'                => 2,
-                'parentCategoryID'  => 0,
-                'name'              => 'Electronics'),
-            array(
-                'ID'                => 3,
-                'parentCategoryID'  => 0,
-                'name'              => 'Kitchen'),
-            array(
-                'ID'                => 4,
-                'parentCategoryID'  => 0,
-                'name'              => 'Stationary'),
-            array(
-                'ID'                => 5,
-                'parentCategoryID'  => 0,
-                'name'              => 'Toiletries'),
-            array(
-                'ID'                => 6,
-                'parentCategoryID'  => 0,
-                'name'              => 'Other')
-        );
+		    $this->render();
+		}
 
+		public function deletead($adID)
+		{
+				$this->ads->delete($adID);
+				redirect('/Admin');
+		}
 
+		public function deleteuser($userID)
+		{
+				$adArray = $this->ads->some('userID',$userID);
+				foreach($adArray as $ad)
+				{
+					 $this->ads->delete($ad->ID);
+				}
 
-
-
-        $userDataArray = array(
-            array(
-                'ID'                => 1,
-                'parentCategoryID'  => 0,
-                'name'              => 'Pets' ),
-            array(
-                'ID'                => 2,
-                'parentCategoryID'  => 0,
-                'name'              => 'Electronics'),
-            array(
-                'ID'                => 3,
-                'parentCategoryID'  => 0,
-                'name'              => 'Kitchen'),
-            array(
-                'ID'                => 4,
-                'parentCategoryID'  => 0,
-                'name'              => 'Stationary'),
-            array(
-                'ID'                => 5,
-                'parentCategoryID'  => 0,
-                'name'              => 'Toiletries'),
-            array(
-                'ID'                => 6,
-                'parentCategoryID'  => 0,
-                'name'              => 'Other')
-        );
-
-        $userList = array();
-        foreach ($userDataArray as $userData)
-        {
-            $userList[] = anchor(
-                '', $userData['name'], 'title="'.$userData['name'].'"');
-        }
-
-        $attributes = array();
-        $attributes['class'] = 'list-group';
-        $attributes['id']    = 'userList';
-
-        $this->data['userlist'] = ul($userList, $attributes);
-				*/
-        $this->render();
-	 }
+				$this->users->delete($userID);
+				redirect('/Admin');
+		}
 }
