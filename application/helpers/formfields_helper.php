@@ -208,5 +208,17 @@ if (!function_exists('showImage')) {
 
 }
 
-/* End of file */
+if (!function_exists('makeUploadImageField')) {
 
+    function makeUploadImageField($label, $name, $width = 120, $height = 80) {
+        $CI = &get_instance();
+        $parms = array(
+            'label' => $label,
+            'name' => $name
+        );
+        return $CI->parser->parse('_fields/uploadimage', $parms, true);
+    }
+
+}
+
+/* End of file */

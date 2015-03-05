@@ -59,6 +59,7 @@ class Profile_Management extends Application {
         $record = $this->users->get($highestid);
 
         // Create form fields
+        $this->data['fimage'] = makeUploadImageField('Profile picture:', 'name');
         $this->data['fname'] = makeTextField('Name:', 'name', $record->displayname);
         $this->data['foldpassword'] = makePasswordField('Old Password:', 'opswd', '');
         $this->data['fnewpassword'] = makePasswordField('New Password:', 'npswd', '');

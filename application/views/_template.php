@@ -53,6 +53,8 @@
     <script src="//tinymce.cachefly.net/4.1/tinymce.min.js"></script>
     <script>tinymce.init({selector:'textarea'});</script>
 
+    <!-- more custom js! -->
+    <script src="{baseurl}assets/js/formfields.js"></script>
 
 </body>
 </html>
