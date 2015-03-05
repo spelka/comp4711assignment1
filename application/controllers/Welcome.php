@@ -23,6 +23,8 @@ class Welcome extends Application {
         $this->data['navbar_activelink']    = base_url('/');
         $this->data['page_title']           = 'Welcome';
         $this->data['page_body']            = 'welcome';
+        $this->data['search'] = $this->parser->parse('_search',$this->data,true);
+
 
         $ads = $this->ads->all();
 
@@ -86,6 +88,7 @@ class Welcome extends Application {
         $this->data['navbar_activelink']    = base_url('/');
         $this->data['page_title']           = 'Welcome';
         $this->data['page_body']            = 'welcome';
+        $this->data['search'] = $this->parser->parse('_search',$this->data,true);
 
         $ads = $this->ads->some('categoryID',$categoryid);
 
@@ -94,6 +97,25 @@ class Welcome extends Application {
 
         $this->render();
     }
+
+    public function search()
+    {
+        $adname    = $_POST['adname'];
+
+        // fill in controller parameters
+        $this->data['navbar_activelink']    = base_url('/');
+        $this->data['page_title']           = 'Welcome';
+        $this->data['page_body']            = 'welcome';
+        $this->data['search'] = $this->parser->parse('_search',$this->data,true);
+
+        $ads = $this->ads->some('title',$adname);
+
+        $this->data['cards'] = $this->generateCards($ads);
+        $this->data['categories'] = $this->generateCategories();
+
+        $this->render();
+    }
+
 }
 
 /* End of file welcome.php */
