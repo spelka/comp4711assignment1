@@ -21,7 +21,7 @@ class Ad_Detail extends Application {
             $this->parser->parse('_carousel', $carousel, true);
 
         // make everything else
-        $ad = $this->ads->get($adID);                           // ad to display
+        $ad = $this->ads->get($adID);                         // ad to display
         $user = $this->users->get($ad->userID);               // ad owner
         $category = $this->categories->get($ad->categoryID);  // ad category
 
