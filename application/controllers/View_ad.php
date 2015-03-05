@@ -24,11 +24,25 @@ class View_ad extends Application {
 	 * An edit button is created for admins or owners of the advertisement.
 	 * A delete button is created for admins or owners of the advertisement.
 	 */
-	 public function index($id)	//FRONT PAGE NEEDS TO PASS ID TO THIS CONTROLLER
+	 public function index($id)
 	 {
 		//get the record from the DB from the id
+		$record = get($id);
 		
 		//pass the data from the record to the webview helpers
+		$this->data['navbar_activelink']    = base_url('/Create_ad');
+        $this->data['page_title'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
+        $this->data['ad_category'] = MakeComboField('category', 'ad_category', $record->category, $categories);
+		$this->data['ad_title'] = MakeTextField('title', 'ad_title', $record->title);
+		$this->data['ad_price'] = MakeTextField('price', 'ad_price', $record->price);
+		$this->data['ad_description'] = MakeTextArea('description', 'ad_description', $record->description);
+
+        $this->data['page_body'] = 'edit_ad'; //the view that is to be rendered
+		
+		$this->data['ad_submit'] = makeSubmitButton('Process Ad', "Update", 'btn-success');
+		
+		//render the form
+		$this->render();
 		
 		//if the user is an admin OR the owner of the ad, create and Edit and Delete button
 		
