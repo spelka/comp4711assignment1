@@ -42,28 +42,8 @@ class Create_ad extends Application {
 	 */
 	 public function index()
 	 {
-		//blank out the error message so it doesn't show up when the form is first loaded
-		$message = '';
-		$this->data['message'] = $message;
-
-
-		// create combo box options
-		$categories = $this->Categories->all();
-		foreach ($categories as $key => $value) {
-			$categories[$key] = $categories[$key]->name;
-		}
-
-	    $this->data['navbar_activelink']    = base_url('/Create_ad');
-        $this->data['ad_category'] = MakeComboField('category', 'ad_category', '', $categories);
-		$this->data['ad_title'] = MakeTextField('title', 'ad_title', '');
-		$this->data['ad_price'] = MakeTextField('price', 'ad_price', '');
-		$this->data['ad_description'] = MakeTextArea('description', 'ad_description', '');
-
-        $this->data['page_body'] = 'create_ad'; //the view that is to be rendered
-
-		$this->data['ad_submit'] = makeSubmitButton('Process Ad', "Submit", 'btn-success');
-
-        $this->render();
+		$newAd = $this->Ads->create();
+		$this->present($newAd);
 	 }
 
 	 /**
@@ -116,7 +96,7 @@ class Create_ad extends Application {
 		// redisplay if any errors
 		if (count($this->errors) > 0)
 		{
-			$this->displayError($record);
+			$this->present($record);
 			return; // make sure we don't try to save anything
 		}
 
@@ -136,7 +116,7 @@ class Create_ad extends Application {
 	*	Re-renders the form to the screen, including any error messages
 	*
 	*/
-	public function displayError($record)
+	public function present($record)
 	{
 		//error codes at the top
 		// format any errors
@@ -148,17 +128,14 @@ class Create_ad extends Application {
 		}
 		$this->data['message'] = $message;
 
-		//the rest of the form
 
-		//specify combo box information
-		$categories = array (
-			'0' => 'Buying',
-			'1' => 'Selling',
-			'2' => 'Free',
-			'3' => 'Jobs',
-			'4' => 'Personals',
-        );
+		// create combo box options
+		$categories = $this->Categories->all();
+		foreach ($categories as $key => $value) {
+			$categories[$key] = $categories[$key]->name;
+		}
 
+		// inject form parameters
 		$this->data['navbar_activelink']    = base_url('/Create_ad');
         $this->data['page_title'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
         $this->data['ad_category'] = MakeComboField('category', 'ad_category', $record->categoryID, $categories);
