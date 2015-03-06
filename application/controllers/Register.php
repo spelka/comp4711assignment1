@@ -108,7 +108,7 @@ class Register extends Application {
         $this->data['message'] = $message;
 
         $this->data['fdisplayname'] = makeTextField('Display Name:', 'dname', $record->fdisplayname);
-        $this->data['fusername'] = makePasswordField('User Name:', 'uname', $record->fusername);
+        $this->data['fusername'] = makeTextField('User Name:', 'uname', $record->fusername);
         $this->data['fpassword'] = makePasswordField('Password', 'pswd', $record->fpassword);
         $this->data['fcpassword'] = makePasswordField('Confirm Password', 'cpswd', $record->fcpassword);
         $this->data['femail'] = makeTextField('Email', 'email', $record->femail);
