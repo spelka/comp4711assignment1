@@ -46,7 +46,7 @@ class Register extends Application {
         $this->load->model('users');
     }
 
-    public function confirm()//$record)
+    public function confirm()
     {
         //if(empty($record))
         $record = new stdClass();
@@ -76,7 +76,7 @@ class Register extends Application {
         // redisplay if any errors
         if(count($this->errors) > 0)
         {
-            $this->display_error($record);
+            $this->present($record);
             return; // make sure we don't try to save anything
         }
 
@@ -94,7 +94,7 @@ class Register extends Application {
         redirect('/welcome');
     }
 
-    public function display_error($record)
+    public function present($record)
     {
         // format any errors
         $message = '';
@@ -115,28 +115,23 @@ class Register extends Application {
         $this->data['fsubmit'] = makeSubmitButton('Submit', 'Submit');
         $this->data['fcancel'] = makeCancelButton('Cancel');
 
+        $this->data['page_title'] = 'Register';
         $this->data['page_body'] = 'register';
+        $this->data['navbar_activelink'] = base_url('/Register');
 
         $this->render();
     }
 
 	public function index()
 	{
-        $this->data['page_title'] = 'Register';
-        $this->data['page_body'] = 'register';
-        $this->data['navbar_activelink'] = base_url('/Register');
-        $this->data['message'] = '';
+        $record = new stdClass();
+        $record->fdisplayname = '';
+        $record->fusername = '';
+        $record->fpassword = '';
+        $record->fcpassword = '';
+        $record->femail = '';
 
-        // Create form fields
-        $this->data['fdisplayname'] = makeTextField('Display Name:', 'dname', '');
-        $this->data['fusername'] = makePasswordField('User Name:', 'uname', '');
-        $this->data['fpassword'] = makePasswordField('Password', 'pswd', '');
-        $this->data['fcpassword'] = makePasswordField('Confirm Password', 'cpswd', '');
-        $this->data['femail'] = makeTextField('Email', 'email', '');
-        $this->data['fsubmit'] = makeSubmitButton('Submit', 'Submit');
-        $this->data['fcancel'] = makeCancelButton('Cancel');
-
-        $this->render();
+        $this->present($record);
 	}
 }
 

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 05, 2015 at 12:06 AM
+-- Generation Time: Mar 06, 2015 at 11:22 PM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -26,7 +26,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `adimages`
 --
 
-CREATE TABLE IF NOT EXISTS `Adimages` (
+CREATE TABLE IF NOT EXISTS `adimages` (
 `ID` int(11) NOT NULL,
   `adID` int(11) NOT NULL,
   `imageID` int(11) NOT NULL
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `Adimages` (
 -- Dumping data for table `adimages`
 --
 
-INSERT INTO `Adimages` (`ID`, `adID`, `imageID`) VALUES
+INSERT INTO `adimages` (`ID`, `adID`, `imageID`) VALUES
 (1, 1, 1),
 (2, 1, 2),
 (3, 1, 3),
@@ -53,7 +53,7 @@ INSERT INTO `Adimages` (`ID`, `adID`, `imageID`) VALUES
 -- Table structure for table `ads`
 --
 
-CREATE TABLE IF NOT EXISTS `Ads` (
+CREATE TABLE IF NOT EXISTS `ads` (
 `ID` int(11) NOT NULL,
   `userID` int(11) NOT NULL,
   `uploaded` text NOT NULL,
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `Ads` (
 -- Dumping data for table `ads`
 --
 
-INSERT INTO `Ads` (`ID`, `userID`, `uploaded`, `price`, `flags`, `description`, `categoryID`, `title`) VALUES
+INSERT INTO `ads` (`ID`, `userID`, `uploaded`, `price`, `flags`, `description`, `categoryID`, `title`) VALUES
 (1, 7, '2014-08-08', 0, 0, 'Can fit up to 4 human-sized dogs.', 1, 'Dog House'),
 (2, 8, '2014-08-08', 0, 0, 'The cake from portal.', 2, 'Portal Cake'),
 (3, 9, '2014-08-08', 0, 0, 'Great item to have for camping.', 3, 'Tent'),
@@ -82,7 +82,7 @@ INSERT INTO `Ads` (`ID`, `userID`, `uploaded`, `price`, `flags`, `description`, 
 -- Table structure for table `categories`
 --
 
-CREATE TABLE IF NOT EXISTS `Categories` (
+CREATE TABLE IF NOT EXISTS `categories` (
 `ID` int(11) NOT NULL,
   `parentCategoryID` int(11) NOT NULL,
   `name` text NOT NULL
@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS `Categories` (
 -- Dumping data for table `categories`
 --
 
-INSERT INTO `Categories` (`ID`, `parentCategoryID`, `name`) VALUES
+INSERT INTO `categories` (`ID`, `parentCategoryID`, `name`) VALUES
 (1, 0, 'Pets'),
 (2, 0, 'Electronics'),
 (3, 0, 'Kitchen'),
@@ -106,7 +106,7 @@ INSERT INTO `Categories` (`ID`, `parentCategoryID`, `name`) VALUES
 -- Table structure for table `images`
 --
 
-CREATE TABLE IF NOT EXISTS `Images` (
+CREATE TABLE IF NOT EXISTS `images` (
 `ID` int(11) NOT NULL,
   `alt` text NOT NULL,
   `src` text NOT NULL
@@ -116,14 +116,34 @@ CREATE TABLE IF NOT EXISTS `Images` (
 -- Dumping data for table `images`
 --
 
-INSERT INTO `Images` (`ID`, `alt`, `src`) VALUES
+INSERT INTO `images` (`ID`, `alt`, `src`) VALUES
 (1, 'alternate text for image 1', 'cabin.png'),
 (2, 'alternate text for image 2', 'cake.png'),
 (3, 'alternate text for image 3', 'circus.png'),
 (4, 'alternate text for image 4', 'game.png'),
 (5, 'alternate text for image 5', 'safe.png'),
-(6, 'alternate text for image 6', 'submarine.png'),
-(7, 'user did not upload any image', 'default-image.png');
+(6, 'alternate text for image 6', 'submarine.png');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reviews`
+--
+
+CREATE TABLE IF NOT EXISTS `reviews` (
+`ID` int(11) NOT NULL,
+  `to` text NOT NULL,
+  `from` text NOT NULL,
+  `review` text NOT NULL,
+  `rating` int(11) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `reviews`
+--
+
+INSERT INTO `reviews` (`ID`, `to`, `from`, `review`, `rating`) VALUES
+(6, 'to user', 'from user', '<p>test</p>', 3);
 
 -- --------------------------------------------------------
 
@@ -131,26 +151,27 @@ INSERT INTO `Images` (`ID`, `alt`, `src`) VALUES
 -- Table structure for table `users`
 --
 
-CREATE TABLE IF NOT EXISTS `Users` (
+CREATE TABLE IF NOT EXISTS `users` (
 `ID` int(11) NOT NULL,
   `type` int(11) NOT NULL,
   `username` text NOT NULL,
   `password` text NOT NULL,
   `email` text NOT NULL,
   `displayname` text NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `Users` (`ID`, `type`, `username`, `password`, `email`, `displayname`) VALUES
+INSERT INTO `users` (`ID`, `type`, `username`, `password`, `email`, `displayname`) VALUES
 (7, 1, 'Bob Monkhouse', 'p@$sw0rD', 'bob@bcit.ca', 'Bob Monkhouse'),
 (8, 0, 'Elayne Boosler', 'p@$sw0rD', 'elayne@bcit.ca', 'Elayne Boosler'),
 (9, 0, 'Mark Russell', 'p@$sw0rD', 'mark@bcit.ca', 'Mark Russell'),
 (10, 0, 'Anonymous', 'p@$sw0rD', 'anonymous@bcit.ca', 'Anonymous'),
 (11, 0, 'Socrates', 'p@$sw0rD', 'socrates@bcit.ca', 'Socrates'),
-(12, 0, 'Isaac Asimov', 'p@$sw0rD', 'isaac@bcit.ca', 'Isaac Asimov');
+(12, 0, 'Isaac Asimov', 'p@$sw0rD', 'isaac@bcit.ca', 'Isaac Asimov'),
+(14, 0, 'test', 'test', 'test@email.com', 'test display name');
 
 --
 -- Indexes for dumped tables
@@ -159,31 +180,37 @@ INSERT INTO `Users` (`ID`, `type`, `username`, `password`, `email`, `displayname
 --
 -- Indexes for table `adimages`
 --
-ALTER TABLE `Adimages`
+ALTER TABLE `adimages`
  ADD PRIMARY KEY (`ID`);
 
 --
 -- Indexes for table `ads`
 --
-ALTER TABLE `Ads`
+ALTER TABLE `ads`
  ADD PRIMARY KEY (`ID`);
 
 --
 -- Indexes for table `categories`
 --
-ALTER TABLE `Categories`
+ALTER TABLE `categories`
  ADD PRIMARY KEY (`ID`);
 
 --
 -- Indexes for table `images`
 --
-ALTER TABLE `Images`
+ALTER TABLE `images`
+ ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `reviews`
+--
+ALTER TABLE `reviews`
  ADD PRIMARY KEY (`ID`);
 
 --
 -- Indexes for table `users`
 --
-ALTER TABLE `Users`
+ALTER TABLE `users`
  ADD PRIMARY KEY (`ID`);
 
 --
@@ -193,28 +220,33 @@ ALTER TABLE `Users`
 --
 -- AUTO_INCREMENT for table `adimages`
 --
-ALTER TABLE `Adimages`
+ALTER TABLE `adimages`
 MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `ads`
 --
-ALTER TABLE `Ads`
+ALTER TABLE `ads`
 MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `categories`
 --
-ALTER TABLE `Categories`
+ALTER TABLE `categories`
 MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `images`
 --
-ALTER TABLE `Images`
+ALTER TABLE `images`
+MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT for table `reviews`
+--
+ALTER TABLE `reviews`
 MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `users`
 --
-ALTER TABLE `Users`
-MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
+ALTER TABLE `users`
+MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=16;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
