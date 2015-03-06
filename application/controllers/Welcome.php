@@ -4,6 +4,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Welcome extends Application {
 
+    /**
+     * load the necessary models and helpers required by this model.
+     */
     public function __construct()
     {
         parent::__construct();
@@ -19,6 +22,9 @@ class Welcome extends Application {
         $this->load->helper('html');
     }
 
+    /**
+     * displays all ads from the database.
+     */
     public function index()
     {
         // inject template parameters
@@ -38,6 +44,11 @@ class Welcome extends Application {
         $this->render();
     }
 
+    /**
+     * displays all the ads that belong to the indicated category.
+     *
+     * @param  $categoryid id of the category to display.
+     */
     public function category($categoryid)
     {
         // inject template parameters
@@ -57,6 +68,10 @@ class Welcome extends Application {
         $this->render();
     }
 
+    /**
+     * search for ads that contain the posted search parameters, and display
+     *   them.
+     */
     public function search()
     {
         // get post parameters
@@ -79,23 +94,34 @@ class Welcome extends Application {
         $this->render();
     }
 
+    /**
+     * generate an unordered list of categories.
+     *
+     * @return returns a list of categories in an unordered list.
+     */
     private function _generate_categories()
     {
-      $categories = $this->categories->all();
+        // get all the categories
+        $categories = $this->categories->all();
 
-      $list = array();
-      foreach ($categories as $category)
-      {
-          $list[] = anchor(base_url('/welcome/category/'.$category->ID), $category->name, 'title="'.$category->name.'"');
-      }
+        // build the links
+        $list = array();
+        foreach ($categories as $category)
+        {
+            $list[] = anchor(base_url('/welcome/category/'.$category->ID),
+                $category->name,
+                'title="'.$category->name.'"');
+        }
 
-      $attributes = array();
-      $attributes['class'] = 'nav menu-item nav-stacked list-group';
-      $attributes['id']    = 'mylist';
+        // add attributes to categories
+        $attributes = array();
+        $attributes['class'] = 'nav menu-item nav-stacked list-group';
+        $attributes['id']    = 'mylist';
 
-      return ul($list, $attributes);
+        // return an unordered list
+        return ul($list, $attributes);
     }
 }
 
-/* End of file welcome.php */
+/* End of file Welcome.php */
 /* Location: ./application/controllers/Welcome.php */
