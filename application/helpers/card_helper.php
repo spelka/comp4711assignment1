@@ -26,3 +26,24 @@ function adToCard($CI, $ad)
 
     return $card;
 }
+
+
+function generateCards($CI, $ads)
+{
+    // putting ads onto the card views
+    $cards = array();
+    foreach($ads as $ad)
+    {
+        $card = adToCard($CI, $ad);   // convert ad into a card object
+        $cards[] = $CI->parser->parse('_card', $card, true);
+    }
+
+    // put cards into columns
+    $columns = makeColumns('col-sm-4', $cards);
+
+    // generate rows with the columns inside them (3 columns per row)
+    $grid = array();
+    $grid['rows'] = makeGroups(3, 'columns', $columns);
+
+    return $grid;
+}
