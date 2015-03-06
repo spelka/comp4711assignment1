@@ -7,47 +7,86 @@ class Welcome extends Application {
     public function __construct()
     {
         parent::__construct();
+
+        // loading models
         $this->load->model('ads');
         $this->load->model('categories');
 
+        // loading helpers
         $this->load->helper('card');
         $this->load->helper('grid');
         $this->load->helper('array');
         $this->load->helper('html');
-
     }
 
     public function index()
     {
-        // fill in controller parameters
+        // inject template parameters
+        $this->data['navbar_activelink'] = base_url('/');
+        $this->data['page_title']        = 'Welcome';
+        $this->data['page_body']         = 'welcome';
+        $this->data['search']            = $this->parser->parse('_search',$this->data,true);
+
+        // generating categories for the sidebar
+        $this->data['categories'] = $this->_generate_categories();
+
+        // show all ads in the database
+        $ads = $this->ads->all();
+        $this->data['cards'] = generateCards($this, $ads);
+
+        // render...
+        $this->render();
+    }
+
+    public function category($categoryid)
+    {
+        // inject template parameters
         $this->data['navbar_activelink']    = base_url('/');
         $this->data['page_title']           = 'Welcome';
         $this->data['page_body']            = 'welcome';
         $this->data['search'] = $this->parser->parse('_search',$this->data,true);
 
+        // generating categories for the sidebar
+        $this->data['categories'] = $this->_generate_categories();
 
-        $ads = $this->ads->all();
+        // show all ads from a category
+        $ads = $this->ads->some('categoryID',$categoryid);
+        $this->data['cards'] = generateCards($this, $ads);
 
-        $grid = generateCards($this, $ads);
-        $this->data['cards'] = $this->parser->parse('_grid', $grid, true);
-
-        $this->data['categories'] = $this->generateCategories();
-
+        // render...
         $this->render();
     }
 
-    public function generateCategories()
+    public function search()
     {
-      /////////////////////////
-      // generate categories //
-      /////////////////////////
+        // get post parameters
+        $adname    = $_POST['adname'];
 
+        // inject template parameters
+        $this->data['navbar_activelink']    = base_url('/');
+        $this->data['page_title']           = 'Welcome';
+        $this->data['page_body']            = 'welcome';
+        $this->data['search'] = $this->parser->parse('_search',$this->data,true);
+
+        // generating categories for the sidebar
+        $this->data['categories'] = $this->_generate_categories();
+
+        // show all ads with matching titles
+        $ads = $this->ads->search($adname);
+        $this->data['cards'] = generateCards($this, $ads);
+
+        // render...
+        $this->render();
+    }
+
+    private function _generate_categories()
+    {
       $categories = $this->categories->all();
 
       $list = array();
       foreach ($categories as $category)
       {
-          $list[] = anchor(base_url('/Welcome/Category/'.$category->ID), $category->name, 'title="'.$category->name.'"');
+          $list[] = anchor(base_url('/welcome/category/'.$category->ID), $category->name, 'title="'.$category->name.'"');
       }
 
       $attributes = array();
@@ -56,41 +95,6 @@ class Welcome extends Application {
 
       return ul($list, $attributes);
     }
-
-    public function Category($categoryid)
-    {
-        // fill in controller parameters
-        $this->data['navbar_activelink']    = base_url('/');
-        $this->data['page_title']           = 'Welcome';
-        $this->data['page_body']            = 'welcome';
-        $this->data['search'] = $this->parser->parse('_search',$this->data,true);
-
-        $ads = $this->ads->some('categoryID',$categoryid);
-
-        $this->data['cards'] = $this->generateCards($ads);
-        $this->data['categories'] = $this->generateCategories();
-
-        $this->render();
-    }
-
-    public function search()
-    {
-        $adname    = $_POST['adname'];
-
-        // fill in controller parameters
-        $this->data['navbar_activelink']    = base_url('/');
-        $this->data['page_title']           = 'Welcome';
-        $this->data['page_body']            = 'welcome';
-        $this->data['search'] = $this->parser->parse('_search',$this->data,true);
-
-        $ads = $this->ads->some('title',$adname);
-
-        $this->data['cards'] = $this->generateCards($ads);
-        $this->data['categories'] = $this->generateCategories();
-
-        $this->render();
-    }
-
 }
 
 /* End of file welcome.php */
