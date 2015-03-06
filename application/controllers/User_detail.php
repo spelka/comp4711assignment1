@@ -60,8 +60,20 @@ class User_detail extends Application {
         $this->data['email'] = $record->email;
     }
 
-    public function index()
-	{
+    public function setRating($rating)
+    {
+        $this->data['rating'] = 'rated';
+        $this->data['page_body'] = 'user_detail';
+        $this->render();
+    }
+
+    public function confirm()
+    {
+
+    }
+
+    public function present()
+    {
         // Get user details
         $id = $this->users->get_current_user_id();
         if($id != null)
@@ -71,8 +83,13 @@ class User_detail extends Application {
 
         // Get user ads
         $ads = $this->ads->some('userID', $id);
-        $grid = generateCards($this, $ads);
-        $this->data['cards'] = $this->parser->parse('_grid', $grid, true);
+        $this->data['cards'] = generateCards($this, $ads);
+
+        // rating
+        $this->data['frating'] = makeHiddenField('rating', '');
+        //$this->data['frating'] = makeTextField('Display Name:', 'frating', '');
+        $this->data['freview'] = makeTextArea('Your Review:', 'review', '');
+        $this->data['fsubmit'] = makeSubmitButton('Submit', "Submit", 'btn-success');
 
         $this->data['page_title'] = 'User Detail';
         $this->data['page_body'] = 'user_detail';
@@ -80,6 +97,10 @@ class User_detail extends Application {
         $this->data['navbar_activelink'] = base_url('/User_detail');
 
         $this->render();
+    }
+    public function index()
+	{
+        $this->present();
 	}
 }
 

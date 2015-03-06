@@ -22,17 +22,12 @@
     font-size:large;
 }
 
- /* for the rating */
+/* for the rating */
 
-.rating {
-    float: left;
-}
 .rating span {
     font-size: 2em;
-    cursor: pointer;
-    float: right;
 }
 
-.rating span:hover, .rating span:hover ~ span{
-  color: gold;
+.rating span.set{
+    color: gold;
 }

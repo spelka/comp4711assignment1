@@ -30,6 +30,8 @@ function adToCard($CI, $ad)
 
 function generateCards($CI, $ads)
 {
+    $CI->load->library('parser');
+
     // putting ads onto the card views
     $cards = array();
     foreach($ads as $ad)
@@ -45,5 +47,6 @@ function generateCards($CI, $ads)
     $grid = array();
     $grid['rows'] = makeGroups(3, 'columns', $columns);
 
-    return $grid;
+    // return the card views
+    return $CI->parser->parse('_grid', $grid, true);
 }
