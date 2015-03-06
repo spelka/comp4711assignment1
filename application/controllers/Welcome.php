@@ -4,94 +4,124 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Welcome extends Application {
 
+    /**
+     * load the necessary models and helpers required by this model.
+     */
     public function __construct()
     {
         parent::__construct();
+
+        // loading models
         $this->load->model('ads');
         $this->load->model('categories');
 
+        // loading helpers
         $this->load->helper('card');
         $this->load->helper('grid');
         $this->load->helper('array');
         $this->load->helper('html');
-
     }
 
+    /**
+     * displays all ads from the database.
+     */
     public function index()
     {
-        // fill in controller parameters
-        $this->data['navbar_activelink']    = base_url('/');
-        $this->data['page_title']           = 'Welcome';
-        $this->data['page_body']            = 'welcome';
-        $this->data['search'] = $this->parser->parse('_search',$this->data,true);
+        // inject template parameters
+        $this->data['navbar_activelink'] = base_url('/');
+        $this->data['page_title']        = 'Welcome';
+        $this->data['page_body']         = 'welcome';
+        $this->data['search']            = $this->parser->parse('_search',$this->data,true);
 
+        // generating categories for the sidebar
+        $this->data['categories'] = $this->_generate_categories();
 
+        // show all ads in the database
         $ads = $this->ads->all();
+        $this->data['cards'] = generateCards($this, $ads);
 
-        $grid = generateCards($this, $ads);
-        $this->data['cards'] = $this->parser->parse('_grid', $grid, true);
-
-        $this->data['categories'] = $this->generateCategories();
-
+        // render...
         $this->render();
     }
 
-    public function generateCategories()
+    /**
+     * displays all the ads that belong to the indicated category.
+     *
+     * @param  $categoryid id of the category to display.
+     */
+    public function category($categoryid)
     {
-      /////////////////////////
-      // generate categories //
-      /////////////////////////
-
-      $categories = $this->categories->all();
-
-      $list = array();
-      foreach ($categories as $category)
-      {
-          $list[] = anchor(base_url('/Welcome/Category/'.$category->ID), $category->name, 'title="'.$category->name.'"');
-      }
-
-      $attributes = array();
-      $attributes['class'] = 'nav menu-item nav-stacked list-group';
-      $attributes['id']    = 'mylist';
-
-      return ul($list, $attributes);
-    }
-
-    public function Category($categoryid)
-    {
-        // fill in controller parameters
+        // inject template parameters
         $this->data['navbar_activelink']    = base_url('/');
         $this->data['page_title']           = 'Welcome';
         $this->data['page_body']            = 'welcome';
         $this->data['search'] = $this->parser->parse('_search',$this->data,true);
 
+        // generating categories for the sidebar
+        $this->data['categories'] = $this->_generate_categories();
+
+        // show all ads from a category
         $ads = $this->ads->some('categoryID',$categoryid);
+        $this->data['cards'] = generateCards($this, $ads);
 
-        $this->data['cards'] = $this->generateCards($ads);
-        $this->data['categories'] = $this->generateCategories();
-
+        // render...
         $this->render();
     }
 
+    /**
+     * search for ads that contain the posted search parameters, and display
+     *   them.
+     */
     public function search()
     {
+        // get post parameters
         $adname    = $_POST['adname'];
 
-        // fill in controller parameters
+        // inject template parameters
         $this->data['navbar_activelink']    = base_url('/');
         $this->data['page_title']           = 'Welcome';
         $this->data['page_body']            = 'welcome';
         $this->data['search'] = $this->parser->parse('_search',$this->data,true);
 
-        $ads = $this->ads->some('title',$adname);
+        // generating categories for the sidebar
+        $this->data['categories'] = $this->_generate_categories();
 
-        $this->data['cards'] = $this->generateCards($ads);
-        $this->data['categories'] = $this->generateCategories();
+        // show all ads with matching titles
+        $ads = $this->ads->search($adname);
+        $this->data['cards'] = generateCards($this, $ads);
 
+        // render...
         $this->render();
     }
 
+    /**
+     * generate an unordered list of categories.
+     *
+     * @return returns a list of categories in an unordered list.
+     */
+    private function _generate_categories()
+    {
+        // get all the categories
+        $categories = $this->categories->all();
+
+        // build the links
+        $list = array();
+        foreach ($categories as $category)
+        {
+            $list[] = anchor(base_url('/welcome/category/'.$category->ID),
+                $category->name,
+                'title="'.$category->name.'"');
+        }
+
+        // add attributes to categories
+        $attributes = array();
+        $attributes['class'] = 'nav menu-item nav-stacked list-group';
+        $attributes['id']    = 'mylist';
+
+        // return an unordered list
+        return ul($list, $attributes);
+    }
 }
 
-/* End of file welcome.php */
+/* End of file Welcome.php */
 /* Location: ./application/controllers/Welcome.php */

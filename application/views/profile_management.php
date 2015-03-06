@@ -1,10 +1,7 @@
 <div class="container">
     <h2>Update Profile</h2>
-    <img id="profile_pic" src="#" alt="your image" /> <!-- Using profileManagement.js -->
-    <input type="file" onchange="readURL(this);" accept="image/*"/>
-
-    <!-- <input type="file" onchange="readURL(this);" accept="image/*" /> <!-- Still need to check images serverside -->
-    <form action="" method="post">
+    <form enctype="multipart/form-data" action="profile_management/confirm" method="post">
+        {fimage}
         {fname}
         {foldpassword}
         {fnewpassword}

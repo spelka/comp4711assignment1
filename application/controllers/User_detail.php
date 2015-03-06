@@ -120,8 +120,7 @@ class User_detail extends Application {
 
         // Get user ads
         $ads = $this->ads->some('userID', $id);
-        $grid = generateCards($this, $ads);
-        $this->data['cards'] = $this->parser->parse('_grid', $grid, true);
+        $this->data['cards'] = generateCards($this, $ads);
 
         // rating
         $this->data['frating'] = makeHiddenField('rating', '');

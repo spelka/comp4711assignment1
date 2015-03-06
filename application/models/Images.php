@@ -3,7 +3,7 @@
 class Images extends MY_Model
 {
 
-    var $imagesRoot = 'assets/img/ads/';
+    var $imagesRoot = 'uploads/posts/';
 
     // Constructor
     public function __construct()
@@ -50,19 +50,6 @@ class Images extends MY_Model
             $record->src = $this->imagesRoot.$record->src;
         }
         return $records;
-
-        // $images = array();
-
-        // // iterate over the data until we find the one we want
-        // foreach ($this->data as $record)
-        // {
-        //     if (in_array($record['ID'], $which))
-        //     {
-        //         $images[] = $record;
-        //     }
-        // }
-
-    //     return $images;
     }
 
     // retrieve all rows
