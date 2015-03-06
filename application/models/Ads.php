@@ -10,8 +10,9 @@ class Ads extends MY_Model
     public function search($str)
     {
         $sql = "SELECT * FROM ".$this->_tableName.
-            " WHERE title LIKE '%".$str."%' OR description LIKE '%".$str."%'";
-        $query = $this->db->query($sql);
+            " WHERE title LIKE ? OR description LIKE ?";
+        $str = '%'.$str.'%';
+        $query = $this->db->query($sql, array($str,$str));
         return $query->result();
     }
 }
