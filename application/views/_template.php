@@ -48,7 +48,7 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="{baseurl}assets/js/jquery.min.js"></script>
     <script src="{baseurl}assets/js/bootstrap.min.js"></script>
-    <script src="{baseurl}assets/js/ratings.js"></script>
+    <script src="{baseurl}assets/js/rating.js"></script>
 
     <!-- for rich text editing -->
     <script src="//tinymce.cachefly.net/4.1/tinymce.min.js"></script>
