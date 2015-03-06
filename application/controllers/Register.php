@@ -26,13 +26,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package	CodeIgniter
- * @author	EllisLab Dev Team
- * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (http://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2015, British Columbia Institute of Technology (http://bcit.ca/)
- * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
- * @since	Version 1.0.0
+ * @package CodeIgniter
+ * @author  EllisLab Dev Team
+ * @copyright   Copyright (c) 2008 - 2014, EllisLab, Inc. (http://ellislab.com/)
+ * @copyright   Copyright (c) 2014 - 2015, British Columbia Institute of Technology (http://bcit.ca/)
+ * @license http://opensource.org/licenses/MIT  MIT License
+ * @link    http://codeigniter.com
+ * @since   Version 1.0.0
  * @filesource
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -64,16 +64,12 @@ class Register extends Application {
         if(empty($record->fusername))
             $this->errors[] = 'You must specify user name.';
         // add database checking for username
-
         if(empty($record->fpassword))
             $this->errors[] = 'No password set.';
         if(empty($record->fcpassword))
             $this->errors[] = 'Confirm password.';
-
         if(strcmp($record->fpassword, $record->fcpassword) !== 0)
             $this->errors[] = 'Password do not match';
-
-
         if (!filter_var($record->femail, FILTER_VALIDATE_EMAIL))
             $this->errors[] = "Invalid email format.";
 
