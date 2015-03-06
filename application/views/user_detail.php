@@ -20,13 +20,18 @@
         <h4>Reviews</h4>
         {reviews}
     </div>
-    <div class="rating">
-        <span id="5" class="glyphicon glyphicon-star"></span>
-        <span id="4" class="glyphicon glyphicon-star"></span>
-        <span id="3" class="glyphicon glyphicon-star"></span>
-        <span id="2" class="glyphicon glyphicon-star"></span>
-        <span id="1" class="glyphicon glyphicon-star"></span>
+    <form action="/user_detail/confirm" method="post">
+        {frating}
+        {freview}    <div id="stars" class="rating">
+        <span id="1" ><i class="glyphicon glyphicon-star"></i></span>
+        <span id="2" ><i class="glyphicon glyphicon-star"></i></span>
+        <span id="3" ><i class="glyphicon glyphicon-star"></i></span>
+        <span id="4" ><i class="glyphicon glyphicon-star"></i></span>
+        <span id="5" ><i class="glyphicon glyphicon-star"></i></span>
         <!--<span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>-->
-    </div>
+    </div>{fsubmit}
+
+    </form>
+
 </div><!-- /.container -->
 
