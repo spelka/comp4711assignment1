@@ -56,7 +56,7 @@ class User_detail extends Application {
     private function getUserDetails($id)
     {
         $record = $this->users->get($id);
-        
+
         $this->data['username'] = $record->username;
         $this->data['displayname'] = $record->displayname;
         $this->data['email'] = $record->email;
@@ -72,37 +72,8 @@ class User_detail extends Application {
         $addRecord->review = $this->input->post('review');
         $addRecord->rating = $this->input->post('rating');
 
-        /*// validation
-        if(empty($record->fdisplayname))
-            $this->errors[] = 'You must specify display name.';
-        if(empty($record->fusername))
-            $this->errors[] = 'You must specify user name.';
-        // add database checking for username (Once log in is implemented)
-
-        if(empty($record->fpassword))
-            $this->errors[] = 'No password set.';
-        if(empty($record->fcpassword))
-            $this->errors[] = 'Confirm password.';
-
-        if(strcmp($record->fpassword, $record->fcpassword) !== 0)
-            $this->errors[] = 'Password do not match';
-
-
-        if (!filter_var($record->femail, FILTER_VALIDATE_EMAIL))
-            $this->errors[] = "Invalid email format.";
-
-        // redisplay if any errors
-        if(count($this->errors) > 0)
-        {
-            $this->present($record);
-            return; // make sure we don't try to save anything
-        }
-
-        $addRecord->type = 0;
-        $addRecord->username = $record->fusername;
-        $addRecord->password = $record->fpassword;
-        $addRecord->email = $record->femail;
-        $addRecord->displayname = $record->fdisplayname;*/
+        // Add validation here once log in is implemented
+        // there shouldn't be an anonymous review
 
         $this->reviews->add($addRecord);
 
