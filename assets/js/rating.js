@@ -8,7 +8,6 @@ $('.rating span').click(function(){
     var rating = $(this).attr('id');
     for (var i = 1; i <= 5; i++)
     {
-        alert(i);
         var id = document.getElementById(i);
 
         if(i <= rating)
