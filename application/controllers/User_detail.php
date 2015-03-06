@@ -46,6 +46,7 @@ class User_detail extends Application {
         $this->load->model('users');
         $this->load->model('ads');
         $this->load->model('categories');
+        $this->load->model('reviews');
 
         $this->load->helper('card');
         $this->load->helper('grid');
@@ -55,21 +56,57 @@ class User_detail extends Application {
     private function getUserDetails($id)
     {
         $record = $this->users->get($id);
+        
         $this->data['username'] = $record->username;
         $this->data['displayname'] = $record->displayname;
         $this->data['email'] = $record->email;
     }
 
-    public function setRating($rating)
-    {
-        $this->data['rating'] = 'rated';
-        $this->data['page_body'] = 'user_detail';
-        $this->render();
-    }
-
     public function confirm()
     {
+        // create a record to add to the database
+        $addRecord = $this->reviews->create();
 
+        $addRecord->from = 'from user'; // need to update this once log-in is implemented
+        $addRecord->to = 'to user'; // need to update this once log-in is implemented
+        $addRecord->review = $this->input->post('review');
+        $addRecord->rating = $this->input->post('rating');
+
+        /*// validation
+        if(empty($record->fdisplayname))
+            $this->errors[] = 'You must specify display name.';
+        if(empty($record->fusername))
+            $this->errors[] = 'You must specify user name.';
+        // add database checking for username (Once log in is implemented)
+
+        if(empty($record->fpassword))
+            $this->errors[] = 'No password set.';
+        if(empty($record->fcpassword))
+            $this->errors[] = 'Confirm password.';
+
+        if(strcmp($record->fpassword, $record->fcpassword) !== 0)
+            $this->errors[] = 'Password do not match';
+
+
+        if (!filter_var($record->femail, FILTER_VALIDATE_EMAIL))
+            $this->errors[] = "Invalid email format.";
+
+        // redisplay if any errors
+        if(count($this->errors) > 0)
+        {
+            $this->present($record);
+            return; // make sure we don't try to save anything
+        }
+
+        $addRecord->type = 0;
+        $addRecord->username = $record->fusername;
+        $addRecord->password = $record->fpassword;
+        $addRecord->email = $record->femail;
+        $addRecord->displayname = $record->fdisplayname;*/
+
+        $this->reviews->add($addRecord);
+
+        redirect('/user_detail');
     }
 
     public function present()
@@ -88,7 +125,9 @@ class User_detail extends Application {
 
         // rating
         $this->data['frating'] = makeHiddenField('rating', '');
-        //$this->data['frating'] = makeTextField('Display Name:', 'frating', '');
+        // for testing purposes so you can see the data
+        //$this->data['frating'] = makeTextField('Display Name:', 'rating', '');
+
         $this->data['freview'] = makeTextArea('Your Review:', 'review', '');
         $this->data['fsubmit'] = makeSubmitButton('Submit', "Submit", 'btn-success');
 
@@ -99,11 +138,12 @@ class User_detail extends Application {
 
         $this->render();
     }
+
     public function index()
 	{
         $this->present();
 	}
 }
 
-/* End of file Profile_Management.php */
-/* Location: ./application/controllers/Profile_Management.php */
+/* End of file User_detail.php */
+/* Location: ./application/controllers/User_detail.php */
