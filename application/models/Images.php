@@ -3,7 +3,7 @@
 class Images extends MY_Model
 {
 
-    var $imagesRoot = 'assets/img/ads/';
+    var $imagesRoot = 'uploads/posts/';
 
     // Constructor
     public function __construct()

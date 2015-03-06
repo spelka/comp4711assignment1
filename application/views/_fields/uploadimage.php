@@ -3,4 +3,3 @@
     <img class="uploadImagePreview"/>
     <input type="file" name="{name}" onchange="updateUploadImagePreview(this);" accept="image/*"/><br/>
 </div>
-
