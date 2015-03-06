@@ -32,9 +32,9 @@ class Welcome extends Application {
 
         // show all ads in the database
         $ads = $this->ads->all();
-        $grid = generateCards($this, $ads);
-        $this->data['cards'] = $this->parser->parse('_grid', $grid, true);
+        $this->data['cards'] = generateCards($this, $ads);
 
+        // render...
         $this->render();
     }
 
@@ -51,9 +51,9 @@ class Welcome extends Application {
 
         // show all ads from a category
         $ads = $this->ads->some('categoryID',$categoryid);
-        $grid = generateCards($this, $ads);
-        $this->data['cards'] = $this->parser->parse('_grid', $grid, true);
+        $this->data['cards'] = generateCards($this, $ads);
 
+        // render...
         $this->render();
     }
 
@@ -73,9 +73,9 @@ class Welcome extends Application {
 
         // show all ads with matching titles
         $ads = $this->ads->search($adname);
-        $grid = generateCards($this, $ads);
-        $this->data['cards'] = $this->parser->parse('_grid', $grid, true);
+        $this->data['cards'] = generateCards($this, $ads);
 
+        // render...
         $this->render();
     }
 
