@@ -23,7 +23,7 @@ class Profile_Management extends Application {
         $record = $this->users->get($highestid);
 
         // Create form fields
-        $this->data['fimage'] = makeUploadImageField('Profile picture:', 'imagefile', true);
+        $this->data['fimage'] = makeUploadImageField('Profile picture:', 'imagefile[]', true);
         $this->data['fname'] = makeTextField('Name:', 'name', $record->displayname);
         $this->data['foldpassword'] = makePasswordField('Old Password:', 'opswd', '');
         $this->data['fnewpassword'] = makePasswordField('New Password:', 'npswd', '');
@@ -40,8 +40,6 @@ class Profile_Management extends Application {
         $config['upload_path']   = './uploads/users';
         $config['allowed_types'] = 'gif|jpg|png';
         $config['max_size']      = 100;
-        $config['max_width']     = 999999;
-        $config['max_height']    = 999999;
 
         $this->load->library('upload');
         $this->upload->initialize($config);
