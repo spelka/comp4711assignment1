@@ -36,7 +36,7 @@ class Create_ad extends Application {
 	 */
 	public function submit()
 	{
-		//create empty entry in RDB
+		// create empty entry in RDB
 		$newAd = $this->Ads->create();
 
 		$newAd->categoryID  = $this->input->post('ad_category');
@@ -47,7 +47,6 @@ class Create_ad extends Application {
 		$newAd->flags = 0;			//0 complaints against this post
 		$newAd->uploaded = date('Y-m-d'); //2015-03-04 yyyy-mm-dd
 		$newAd->userID = $this->users->get_current_user_id();
-
 
 		// validate user input
 		if ($newAd->userID == null)
@@ -72,7 +71,22 @@ class Create_ad extends Application {
 			return; // make sure we don't try to save anything
 		}
 
-		//Create a new entry in the RDB
+		// make a directory for the uploaded file(s)
+		mkdir('./uploads/users/'.$this->users->get_current_user_id());
+
+		// load the upload library, and configure it
+		$config['upload_path']   =
+			'./uploads/users/'.$this->users->get_current_user_id();
+		$config['allowed_types'] = 'gif|jpg|png';
+		$config['max_size']      = 100;
+
+		$this->load->library('upload');
+		$this->upload->initialize($config);
+
+		// do the uploading
+		$this->upload->do_multi_upload('imagefile');
+
+		// create a new entry in the RDB
 		if (empty($newAd->ID))
 		{
 			$this->Ads->add($newAd);

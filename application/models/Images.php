@@ -34,7 +34,7 @@ class Images extends MY_Model
         foreach($imageIDs as $imageID)
         {
             $imageRecord = parent::get($imageID);
-            $imageRecord->src = $this->imagesRoot.$imageRecord->src;
+            $imageRecord->src = $this->imagesRoot.$adID.$imageRecord->src;
             $imageRecords[] = $imageRecord;
         }
 

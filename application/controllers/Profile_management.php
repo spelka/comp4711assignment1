@@ -23,7 +23,7 @@ class Profile_Management extends Application {
         $record = $this->users->get($highestid);
 
         // Create form fields
-        $this->data['fimage'] = makeUploadImageField('Profile picture:', 'imagefile[]', true);
+        $this->data['fimage'] = makeUploadImageField('Profile picture:', 'imagefile[]', false);
         $this->data['fname'] = makeTextField('Name:', 'name', $record->displayname);
         $this->data['foldpassword'] = makePasswordField('Old Password:', 'opswd', '');
         $this->data['fnewpassword'] = makePasswordField('New Password:', 'npswd', '');
@@ -37,29 +37,23 @@ class Profile_Management extends Application {
 
     public function confirm()
     {
-        $config['upload_path']   = './uploads/users';
+        // make a directory for the uploaded file(s)
+        mkdir('./uploads/users/'.$this->users->get_current_user_id());
+
+        // load the upload library, and configure it
+        $config['upload_path']   =
+            './uploads/users/'.$this->users->get_current_user_id();
         $config['allowed_types'] = 'gif|jpg|png';
         $config['max_size']      = 100;
 
         $this->load->library('upload');
         $this->upload->initialize($config);
 
+        // do the uploading
         echo $this->upload->do_multi_upload('imagefile') ? 'uploaded' : 'failed up upload';
         echo $this->upload->display_errors();
 
-    // public function do_upload() {
-
-    //     if(!$this->upload->do_upload())
-    //     {
-    //         $error = array('error' => $this->upload->display_errors());
-    //         $this->load->view('upload_form', $error);
-    //     }
-    //     else
-    //     {
-    //         $data = array('upload_data' => $this->upload->data());
-    //         $this->load->view('upload_success', $data);
-    //     }
-    // }
+        redirect('/User_detail');
     }
 }
 
