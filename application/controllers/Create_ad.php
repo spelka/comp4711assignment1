@@ -25,11 +25,11 @@ class Create_ad extends Application {
 	 * Responsible for creating the form elements programatically by filling in templates
 	 *
 	 */
-	 public function index()
-	 {
+	public function index()
+	{
 		$newAd = $this->Ads->create();
 		$this->present($newAd);
-	 }
+	}
 
 	 /**
 	 *	Get variables from the form, validate them, and submit them to the RDB
@@ -91,21 +91,26 @@ class Create_ad extends Application {
 	 }
 
 	/**
-	*	Re-renders the form to the screen, including any error messages
-	*
-	*/
+	 *	Re-renders the form to the screen, including any error messages
+	 *
+	 */
 	public function present($record)
 	{
-		//error codes at the top
-		// format any errors
-		$message = '';
+		// inject error messages
+		$errorMessage = '';
 		if (count($this->errors) > 0)
 		{
 			foreach ($this->errors as $errors)
-				$message .= $errors . BR;
+			{
+				$errorMessage .= $errors . BR;
+			}
 		}
-		$this->data['message'] = $message;
+		$this->data['message'] = $errorMessage;
 
+		// inject template parameters
+		$this->data['navbar_activelink'] = base_url('/Create_ad');
+		$this->data['page_title'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
+		$this->data['page_body'] = 'create_ad'; //the view that is to be rendered
 
 		// create combo box options
 		$categories = $this->Categories->all();
@@ -115,17 +120,13 @@ class Create_ad extends Application {
 		}
 
 		// inject form parameters
-		$this->data['navbar_activelink'] = base_url('/Create_ad');
-		$this->data['page_title'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
-		$this->data['ad_category'] = MakeComboField('category', 'ad_category', $record->categoryID, $combobox_entries);
-		$this->data['ad_title'] = MakeTextField('title', 'ad_title', $record->title);
-		$this->data['ad_price'] = MakeTextField('price', 'ad_price', $record->price);
+		$this->data['ad_image']       = makeUploadImageField('ad images', 'imagefile');
+		$this->data['ad_category']    = MakeComboField('category', 'ad_category', $record->categoryID, $combobox_entries);
+		$this->data['ad_title']       = MakeTextField('title', 'ad_title', $record->title);
+		$this->data['ad_price']       = MakeTextField('price', 'ad_price', $record->price);
 		$this->data['ad_description'] = MakeTextArea('description', 'ad_description', $record->description);
-
-		$this->data['page_body'] = 'create_ad'; //the view that is to be rendered
-
-		$this->data['ad_submit'] = makeSubmitButton('Process Ad', "Submit", 'btn-success');
-		$this->data['ad_cancel'] = makeCancelButton('Cancel');
+		$this->data['ad_submit']      = makeSubmitButton('Process Ad', "Submit", 'btn-success');
+		$this->data['ad_cancel']      = makeCancelButton('Cancel');
 
 		$this->render();
 	}
