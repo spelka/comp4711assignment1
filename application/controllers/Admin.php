@@ -2,8 +2,17 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Admin extends Application {
+/*
+Admin controller
+Provides functionality of ediing posts and deleteing posts
+When a user is deleted, all their posts are deleted with the user
+When a post is deleted, the post is deleted
 
+When edit is pressed, the site calls the edit ad page with the id of the ad
+*/
+
+class Admin extends Application
+{
 		public function __construct()
 		{
 				parent::__construct();
@@ -54,7 +63,7 @@ class Admin extends Application {
 						$userData = array();
 
 						$userData['delete']			  = anchor(base_url('/Admin/deleteuser/'.$user->ID), "Delete", 'title="'.$user->ID.'"');
-						$userData['edit']					= anchor(base_url('/editUser/'.$user->ID), "Edit", 'title="'.$user->ID.'"');
+						$userData['edit']					= anchor(base_url('/Profile_Management/user/'.$user->ID), "Edit", 'title="'.$user->ID.'"');
 						$userData['ID'] 					= $user->ID;
 						$userData['type']     		= $user->type;
 						$userData['username']   	= $user->username;
@@ -69,11 +78,13 @@ class Admin extends Application {
 		}
 
 		public function deletead($adID)
+		//Delete an ad and refresh the page to update the view
 		{
 				$this->ads->delete($adID);
 				redirect('/Admin');
 		}
 
+	//Delete an user and any post associated with the user and refresh the page to update the view
 		public function deleteuser($userID)
 		{
 				$adArray = $this->ads->some('userID',$userID);
