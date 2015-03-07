@@ -39,30 +39,22 @@ class Create_ad extends Application {
 		// create empty entry in RDB
 		$newAd = $this->Ads->create();
 
+		// retrieve form parameters, and inject them into the ad object
 		$newAd->categoryID  = $this->input->post('ad_category');
-		$newAd->title       = $this->input->post('ad_title');
-		$newAd->price       = $this->input->post('ad_price');
+		$newAd->title = $this->input->post('ad_title');
+		$newAd->price = $this->input->post('ad_price');
 		$newAd->description = $this->input->post('ad_description');
-
 		$newAd->flags = 0;			//0 complaints against this post
 		$newAd->uploaded = date('Y-m-d'); //2015-03-04 yyyy-mm-dd
 		$newAd->userID = $this->users->get_current_user_id();
 
 		// validate user input
 		if ($newAd->userID == null)
-		{
 			$this->errors[] = 'You must log in to submit a post';
-		}
-
 		if (empty($newAd->title))
-		{
 			$this->errors[] = 'You must enter a title for your advertisement';
-		}
-
 		if ($newAd->price < 0)
-		{
 			$this->errors[] = 'You cannot enter a negative amount of money';
-		}
 
 		// redisplay if any errors
 		if (count($this->errors) > 0)
@@ -71,36 +63,41 @@ class Create_ad extends Application {
 			return; // make sure we don't try to save anything
 		}
 
-		// make a directory for the uploaded file(s)
-		mkdir('./uploads/users/'.$this->users->get_current_user_id());
-
-		// load the upload library, and configure it
-		$config['upload_path']   =
-			'./uploads/users/'.$this->users->get_current_user_id();
-		$config['allowed_types'] = 'gif|jpg|png';
-		$config['max_size']      = 100;
-
-		$this->load->library('upload');
-		$this->upload->initialize($config);
-
-		// do the uploading
-		$this->upload->do_multi_upload('imagefile');
-
-		// create a new entry in the RDB
+		// insert or update the ad
 		if (empty($newAd->ID))
 		{
 			$this->Ads->add($newAd);
-
-			// associate the ad with the default image
-			$adimagerow = $this->Adimages->create();
-			$adimagerow->adID	= $this->Ads->highest();
-			$adimagerow->imageID = 7;
-			$this->Adimages->add($adimagerow);
+			$newAd->ID = $this->Ads->highest();
 		}
 		else
 		{
 			$this->Ads->update($newAd);
 		}
+
+		// make a directory for the uploaded file(s)
+		mkdir('./uploads/posts/'.$this->users->get_current_user_id());
+
+		// load & configure the upload library
+		$this->load->library('upload');
+
+		$config['upload_path']   =
+			'./uploads/users/'.$this->users->get_current_user_id();
+		$config['allowed_types'] = 'gif|jpg|png';
+		$config['max_size']      = 100;
+		$this->upload->initialize($config);
+
+		// do the uploading
+		$this->upload->do_multi_upload('imagefile');
+
+		// insert uploaded images into the database
+
+		// associate the uploaded images with the ad, or if no images were
+		// uploaded, associate the ad with the default image.
+		$adimagerow = $this->Adimages->create();
+		$adimagerow->adID = $this->Ads->highest();
+		$adimagerow->imageID = 7;
+		$this->Adimages->add($adimagerow);
+
 		redirect('/');
 	 }
 
