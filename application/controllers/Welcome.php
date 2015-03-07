@@ -115,7 +115,7 @@ class Welcome extends Application {
 
         // add attributes to categories
         $attributes = array();
-        $attributes['class'] = 'nav menu-item nav-stacked list-group';
+        $attributes['class'] = 'sidebar-brand';
         $attributes['id']    = 'mylist';
 
         // return an unordered list
