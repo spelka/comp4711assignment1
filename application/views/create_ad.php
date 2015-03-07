@@ -1,6 +1,7 @@
 <div class="row">
 	<div class="errors">{message}</div>
 	<form action="/Create_ad/submit" method="post">
+		{ad_images}
 		{ad_category}
 		{ad_title}
 		{ad_price}

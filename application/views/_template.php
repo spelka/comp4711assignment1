@@ -12,6 +12,7 @@
     <title>{page_title}</title>
 
     <link href="{baseurl}assets/css/custom.css" rel="stylesheet">
+    <link href="{baseurl}assets/css/formfields.css" rel="stylesheet">
     <link href="{baseurl}assets/css/bootstrap.css" rel="stylesheet">
     <link href="{baseurl}assets/css/card.css" rel="stylesheet">
     <link href="http://getbootstrap.com/examples/starter-template/starter-template.css" rel="stylesheet">

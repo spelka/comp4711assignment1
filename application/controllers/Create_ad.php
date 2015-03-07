@@ -120,7 +120,7 @@ class Create_ad extends Application {
 		}
 
 		// inject form parameters
-		$this->data['ad_image']       = makeUploadImageField('ad images', 'imagefile');
+		$this->data['ad_images']      = makeUploadImageField('ad images', 'imagefile', true);
 		$this->data['ad_category']    = MakeComboField('category', 'ad_category', $record->categoryID, $combobox_entries);
 		$this->data['ad_title']       = MakeTextField('title', 'ad_title', $record->title);
 		$this->data['ad_price']       = MakeTextField('price', 'ad_price', $record->price);
