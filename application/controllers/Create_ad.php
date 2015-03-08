@@ -16,7 +16,7 @@ class Create_ad extends Application {
 		parent::__construct();
 
 		// load helpers
-		// $this->load->helper('formfields_helper');
+		$this->load->helper('formfields_helper');
 
 		// load models
 		$this->load->model('ads');
