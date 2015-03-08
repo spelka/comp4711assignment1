@@ -7,7 +7,7 @@
         {categories}
     </div>
     <div class="errors">{message}</div>
-    <div>{cards}</div>
+    <div class="content">{cards}</div>
 
     <div class="clearfix visible-lg"></div>
 </div>
