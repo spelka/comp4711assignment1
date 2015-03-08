@@ -30,7 +30,7 @@ class Manage_ads extends Application
                 $adData = array();
 
                 $adData['delete']      = anchor(base_url('/Manage_ads/deletead/'.$ad->ID), "Delete", 'title="'.$ad->ID.'"');
-                $adData['edit']        = anchor(base_url('/editAd/'.$ad->ID), "Edit", 'title="'.$ad->ID.'"');
+                $adData['edit']        = anchor(base_url('/edit_ad/index/'.$ad->ID), "Edit", 'title="'.$ad->ID.'"');
                 $adData['ID']          = $ad->ID;
                 $adData['userID']      = $ad->userID;
                 $adData['uploaded']    = $ad->uploaded;
