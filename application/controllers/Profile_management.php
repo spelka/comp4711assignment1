@@ -13,44 +13,34 @@ class Profile_Management extends Application {
         $this->load->model('users');
     }
 
-    /* Should remove this because it doesn't make sense for this page to have a default index thing
     public function index()
     {
+        $currentUserId = $this->users->get_current_user_id();
+        if($currentUserId != null)
+        {
+            $this->user($currentUserId);
+        }
+        else
+        {
+            redirect('Welcome/index/you must login to manage your profile.');
+        }
+    }
+
+    public function _renderForm($id)
+    {
+        $user = $this->users->get($id);
+
         $this->data['page_title'] = 'Manage Profile';
         $this->data['page_body'] = 'profile_management';
-        $this->data['navbar_activelink'] = base_url('/Profile_Management');
-
-        $highestid = $this->users->highest();
-        $record = $this->users->get($highestid);
+        $this->data['navbar_activelink'] = base_url('/Profile_management');
 
         // Create form fields
         $this->data['fimage'] = makeUploadImageField('Profile picture:', 'imagefile[]', false);
-        $this->data['fname'] = makeTextField('Name:', 'name', $record->displayname);
+        $this->data['fname'] = makeTextField('Name:', 'name', $user->displayname);
         $this->data['foldpassword'] = makePasswordField('Old Password:', 'opswd', '');
         $this->data['fnewpassword'] = makePasswordField('New Password:', 'npswd', '');
         $this->data['fconfirmpassword'] = makePasswordField('Confirm Password:', 'cpswd', '');
-        $this->data['femail'] = makeTextField('Email:', 'email', $record->email);
-        $this->data['fsubmit'] = makeSubmitButton('Submit', 'Submit');
-        $this->data['fcancel'] = makeCancelButton('Cancel');
-
-        $this->render();
-    }
-    */
-    public function renderForm($id)
-    {
-        $record = $this->users->get($id);
-
-        $this->data['page_title'] = 'Manage Profile';
-        $this->data['page_body'] = 'profile_management';
-        $this->data['navbar_activelink'] = base_url('/Profile_Management');
-
-        // Create form fields
-        $this->data['fimage'] = makeUploadImageField('Profile picture:', 'imagefile');
-        $this->data['fname'] = makeTextField('Name:', 'name', $record->displayname);
-        $this->data['foldpassword'] = makePasswordField('Old Password:', 'opswd', '');
-        $this->data['fnewpassword'] = makePasswordField('New Password:', 'npswd', '');
-        $this->data['fconfirmpassword'] = makePasswordField('Confirm Password:', 'cpswd', '');
-        $this->data['femail'] = makeTextField('Email:', 'email', $record->email);
+        $this->data['femail'] = makeTextField('Email:', 'email', $user->email);
         $this->data['fsubmit'] = makeSubmitButton('Submit', 'Submit');
         $this->data['fcancel'] = makeCancelButton('Cancel');
 
@@ -59,13 +49,19 @@ class Profile_Management extends Application {
 
     public function user($id)
     {
-        if(true)//TODO: Add some way of validation of whether the user is either a ADMIN or the CORRECT user
+        $currentUserId = $this->users->get_current_user_id();
+        $isAdmin = $this->users->is_current_user_admin();
+
+        // let the user see the form if user is either ADMIN or the CORRECT user
+        if($isAdmin || $currentUserId == $id)
         {
-            $this->renderForm($id);
+            // show them the page
+            $this->_renderForm($id);
         }
         else
         {
-            //generate some error
+            // kick the user out; they're not welcomed here
+            redirect('Welcome/index/user not authorized to see this page.');
         }
     }
 
