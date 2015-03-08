@@ -44,6 +44,23 @@ class Users extends MY_Model
     }
 
     /**
+     * returns the record of the currently logged in user; null if no user is
+     *   logged in.
+     *
+     * @return record of the currently logged in user; null if no one is logged
+     *   in.
+     */
+    public function get_current_user()
+    {
+        return $this->get($this->get_current_user_id());
+    }
+
+    public function check_username($username)
+    {
+        return (count($this->some('username',$username)) == 0);
+    }
+
+    /**
      * returns true if the current user is an admin; false otherwise.
      *
      * @return true if the current user is an admin; false otherwise.
