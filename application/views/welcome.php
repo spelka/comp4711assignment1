@@ -6,10 +6,8 @@
         </div>
         {categories}
     </div>
-
-    <div>
-        {cards}
-    </div>
+    <div class="errors">{message}</div>
+    <div>{cards}</div>
 
     <div class="clearfix visible-lg"></div>
 </div>

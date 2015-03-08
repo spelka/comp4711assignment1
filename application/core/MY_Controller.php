@@ -14,11 +14,20 @@ class Application extends CI_Controller {
         $this->load->model('users');
 
         // menu items for the navigation bar
-        $this->choices['Home']               = base_url('/');
-        $this->choices['Register']           = base_url('/Register');
-        $this->choices['Profile Management'] = base_url('/Profile_management');
-        $this->choices['User Details']       = base_url('/User_detail');
-        $this->choices['Create Ad']          = base_url('/Create_ad');
+        if($this->users->get_current_user_id() == null)
+        {
+            $this->choices['Register']           = base_url('/Register');
+        }
+        else
+        {
+            $this->choices['Profile Management'] = base_url('/Profile_management');
+            $this->choices['User Details']       = base_url('/User_detail');
+            $this->choices['Create Ad']          = base_url('/Create_ad');
+        }
+        if($this->users->is_current_user_admin())
+        {
+            $this->choices['Admin Page']     = base_url('/Admin');
+        }
 
         // default placeholder values for _template view
         $this->data['baseurl']           = base_url('/');  // base url of the site

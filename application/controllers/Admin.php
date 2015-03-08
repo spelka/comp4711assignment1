@@ -25,56 +25,62 @@ class Admin extends Application
 
 		public function index()
 		{
-		    $this->data['page_title'] = '';
-		    $this->data['page_body'] = 'admin.php';
+			if(!$this->users->is_current_user_admin())
+			{
+				redirect('Welcome/index/user not authorized to see this page.');
+				return;
+			}
 
-				//Create Ad list
-				$ads = $this->ads->all();
+			$this->data['page_title'] = '';
+			$this->data['page_body'] = 'admin.php';
 
-				$adDataArray = array();
+			//Create Ad list
+			$ads = $this->ads->all();
 
-				foreach($ads as $ad)
-				{
-						$adData = array();
+			$adDataArray = array();
 
-						$adData['delete']			= anchor(base_url('/Admin/deletead/'.$ad->ID), "Delete", 'title="'.$ad->ID.'"');
-						$adData['edit']				= anchor(base_url('/editAd/'.$ad->ID), "Edit", 'title="'.$ad->ID.'"');
-						$adData['ID'] 				= $ad->ID;
-						$adData['userID']     = $ad->userID;
-						$adData['uploaded']   = $ad->uploaded;
-						$adData['price']      = $ad->price;
-						$adData['flags']    	= $ad->flags;
-						$adData['description']= $ad->description;
-						$adData['categoryID'] = $ad->categoryID;
-						$adData['title']			= $ad->title;
+			foreach($ads as $ad)
+			{
+					$adData = array();
 
-						array_push($adDataArray, $adData);
-				}
+					$adData['delete']      = anchor(base_url('/Admin/deletead/'.$ad->ID), "Delete", 'title="'.$ad->ID.'"');
+					$adData['edit']        = anchor(base_url('/editAd/'.$ad->ID), "Edit", 'title="'.$ad->ID.'"');
+					$adData['ID']          = $ad->ID;
+					$adData['userID']      = $ad->userID;
+					$adData['uploaded']    = $ad->uploaded;
+					$adData['price']       = $ad->price;
+					$adData['flags']       = $ad->flags;
+					$adData['description'] = $ad->description;
+					$adData['categoryID']  = $ad->categoryID;
+					$adData['title']       = $ad->title;
 
-				$this->data['adlist'] = $adDataArray;
+					array_push($adDataArray, $adData);
+			}
 
-				//Create User List
-				$users = $this->users->all();
+			$this->data['adlist'] = $adDataArray;
 
-				$userDataArray = array();
+			//Create User List
+			$users = $this->users->all();
 
-				foreach($users as $user)
-				{
-						$userData = array();
+			$userDataArray = array();
 
-						$userData['delete']			  = anchor(base_url('/Admin/deleteuser/'.$user->ID), "Delete", 'title="'.$user->ID.'"');
-						$userData['edit']					= anchor(base_url('/Profile_Management/user/'.$user->ID), "Edit", 'title="'.$user->ID.'"');
-						$userData['ID'] 					= $user->ID;
-						$userData['type']     		= $user->type;
-						$userData['username']   	= $user->username;
-						$userData['email']      	= $user->email;
-						$userData['displayname']  = $user->displayname;
-						array_push($userDataArray, $userData);
-				}
+			foreach($users as $user)
+			{
+					$userData = array();
 
-				$this->data['userlist'] = $userDataArray;
+					$userData['delete']      = anchor(base_url('/Admin/deleteuser/'.$user->ID), "Delete", 'title="'.$user->ID.'"');
+					$userData['edit']        = anchor(base_url('/Profile_Management/user/'.$user->ID), "Edit", 'title="'.$user->ID.'"');
+					$userData['ID']          = $user->ID;
+					$userData['type']        = $user->type;
+					$userData['username']    = $user->username;
+					$userData['email']       = $user->email;
+					$userData['displayname'] = $user->displayname;
+					array_push($userDataArray, $userData);
+			}
 
-		    $this->render();
+			$this->data['userlist'] = $userDataArray;
+
+			$this->render();
 		}
 
 		public function deletead($adID)

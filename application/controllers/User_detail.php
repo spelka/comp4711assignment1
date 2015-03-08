@@ -28,69 +28,10 @@ class User_detail extends Application {
         $this->data['displayname'] = $record[0]->displayname;
         $this->data['email'] = $record[0]->email;
 
-        return $record[0]->ID;
-    }
-
-    private function generateStars($setStars, $numStars)
-    {
-        $stars = array();
-        for ($i = 1; $i <= $numStars; $i++)
-        {
-            $star = array( 'rate' => 'rated',
-                           'status' => ($i <= $setStars ? 'class=set' : 'class=not-set'));
-            $stars[] = $star;
-        }
-
-        return $stars;
-    }
-
-    // create the stars
-    private function getReviewStars($username)
-    {
-        // get total number of stars
-        $records = $this->reviews->some('to', $username);
-        $total = 0;
-
-        // get the average and round up to nearest whole number
-        foreach($records as $record)
-        {
-            $total += $record->rating;
-        }
-
-        $ratingCount = sizeof($records);
-        $rating = ceil($total/($ratingCount == 0 ? 1 : $ratingCount));
-
-
-        $reviewStars = array();
-        $reviewStars['stars'] = $this->generateStars($rating, NUMRATING);
-
-        return $this->parser->parse('_stars', $reviewStars, true);
-    }
-
-    // get reviews
-    private function getReviews($username)
-    {
-        // get reviews
-        $records = $this->reviews->some('to', $username);
-
-        // generate reviews
-        $reviews = array();
-        foreach($records as $record)
-        {
-            $review = array();
-            $review['from'] = $record->from;
-
-            // get user rating and display stars
-            $userrating = array();
-            $userrating['stars'] = $this->generateStars($record->rating, NUMRATING);
-            $review['stars'] = $this->parser->parse('_stars', $userrating, true);
-
-            $review['review'] = $record->review;
-            $reviews[] = $review;
-        }
-
-        $allReviews['rows'] = $reviews;
-        return $this->parser->parse('_reviews', $allReviews, true);
+        $this->data['username'] = $record->username;
+        $this->data['displayname'] = $record->displayname;
+        $this->data['email'] = $record->email;
+        $this->data['imagesrc'] = $this->users->getUserImageSrc($id);
     }
 
     public function confirm()

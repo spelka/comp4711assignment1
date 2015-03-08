@@ -1,5 +1,4 @@
 <?php
-
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Register extends Application {
@@ -54,9 +53,30 @@ class Register extends Application {
         $addRecord->email = $record->femail;
         $addRecord->displayname = $record->fdisplayname;
 
-        $this->users->add($addRecord);
+        $addRecord->ID = $this->users->add($addRecord);
 
-        redirect('/welcome');
+        // load the upload library, and configure it
+        $config['upload_path']   = './uploads/users/'.$addRecord->ID.'/';
+        $config['allowed_types'] = 'gif|jpg|png';
+        $config['max_size']      = 100;
+        $this->load->library('upload');
+        $this->upload->initialize($config);
+
+        // make a directory for the uploaded file(s)
+        mkdir($config['upload_path']);
+
+        // do the uploading
+        $this->upload->do_multi_upload('imagefile');
+
+        // set the user's image in our database
+        $uploadDetails = $this->upload->get_multi_upload_data();
+        if(count($uploadDetails) > 0)
+        {
+            $uploadDetails = $uploadDetails[0];
+            $this->users->setUserImage($addRecord->ID,$uploadDetails['file_name']);
+        }
+
+        redirect('/Welcome');
     }
 
     public function present($record)
@@ -72,6 +92,7 @@ class Register extends Application {
 
         $this->data['message'] = $message;
 
+        $this->data['fimage'] = makeUploadImageField('Profile picture:', 'imagefile[]', false);
         $this->data['fdisplayname'] = makeTextField('Display Name:', 'dname', $record->fdisplayname);
         $this->data['fusername'] = makeTextField('User Name:', 'uname', $record->fusername);
         $this->data['fpassword'] = makePasswordField('Password', 'pswd', $record->fpassword);
