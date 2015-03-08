@@ -19,7 +19,7 @@ class Users extends MY_Model
      *
      * @return id of the user, or null if no user was found.
      */
-    public function get_id_by_credentials($username,$password)
+    public function getIdByCredentials($username,$password)
     {
         $users = $this->some('username',$username);
         if((count($users) > 0) && ($users[0]->password == $password))
@@ -38,7 +38,7 @@ class Users extends MY_Model
      *
      * @return id of the currently logged in user; null if no one is logged in.
      */
-    public function get_current_user_id()
+    public function getCurrentUserId()
     {
         return $this->session->userdata(SESSION_UID);
     }
@@ -50,12 +50,12 @@ class Users extends MY_Model
      * @return record of the currently logged in user; null if no one is logged
      *   in.
      */
-    public function get_current_user()
+    public function getCurrentUser()
     {
-        return $this->get($this->get_current_user_id());
+        return $this->get($this->getCurrentUserId());
     }
 
-    public function check_username($username)
+    public function checkUsernameAvailability($username)
     {
         return (count($this->some('username',$username)) == 0);
     }
@@ -65,9 +65,9 @@ class Users extends MY_Model
      *
      * @return true if the current user is an admin; false otherwise.
      */
-    public function is_current_user_admin()
+    public function isCurrentUserAdmin()
     {
-        $currUser = $this->get($this->get_current_user_id());
+        $currUser = $this->get($this->getCurrentUserId());
         return ($currUser != null && $currUser->type == 1);
     }
 

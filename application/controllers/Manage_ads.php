@@ -29,7 +29,7 @@ class Manage_ads extends Application
         $this->data['page_body'] = 'Manage_ads.php';
 
         //Create Ad list
-        $ads = $this->ads->some('userID',$this->users->get_current_user_id());
+        $ads = $this->ads->some('userID',$this->users->getCurrentUserId());
 
         $adDataArray = array();
 

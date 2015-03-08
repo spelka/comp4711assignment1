@@ -169,7 +169,7 @@ class User_detail extends Application {
     {
         $id = $this->getUserDetails($username);
 
-        $curruser = $this->users->get_current_user();
+        $curruser = $this->users->getCurrentUser();
         $viewer = ($curruser != null) ? $curruser->username : null;
 
         // Get user ads
@@ -196,7 +196,7 @@ class User_detail extends Application {
         }
         else
         {
-            $curruser = $this->users->get_current_user();
+            $curruser = $this->users->getCurrentUser();
             if($curruser != null)
             {
                 $this->present($curruser->username);

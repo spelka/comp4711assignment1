@@ -25,7 +25,7 @@ class Admin extends Application
 
 		public function index()
 		{
-			if(!$this->users->is_current_user_admin())
+			if(!$this->users->isCurrentUserAdmin())
 			{
 				redirect('Welcome/index/user not authorized to see this page.');
 				return;

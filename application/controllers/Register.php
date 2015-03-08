@@ -27,7 +27,7 @@ class Register extends Application {
             $this->errors[] = 'You must specify display name.';
         if(empty($record->fusername))
             $this->errors[] = 'You must specify user name.';
-        if(!$this->users->check_username($record->fusername))
+        if(!$this->users->checkUsernameAvailability($record->fusername))
             $this->errors[] = 'Someone already has that username; please change your username.';
         if(empty($record->fpassword))
             $this->errors[] = 'No password set.';
