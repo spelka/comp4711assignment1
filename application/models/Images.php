@@ -17,7 +17,7 @@ class Images extends MY_Model
         $record = parent::get($pkeyval1,$pkeyval2);
         if($record)
         {
-            $record->src = $this->imagesRoot.$record->src;
+            $record->src = $this->imagesRoot.$record->ID.'/'.$record->src;
         }
         return $record;
     }
@@ -47,7 +47,7 @@ class Images extends MY_Model
         $records = parent::some($column,$value);
         foreach($records as $record)
         {
-            $record->src = $this->imagesRoot.$record->src;
+            $record->src = $this->imagesRoot.$record->ID.'/'.$record->src;
         }
         return $records;
     }
@@ -58,7 +58,7 @@ class Images extends MY_Model
         $records = parent::all();
         foreach($records as $record)
         {
-            $record->src = $imagesRoot.$record->src;
+            $record->src = $imagesRoot.$record->ID.'/'.$record->src;
         }
         return $records;
     }
