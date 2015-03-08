@@ -1,6 +1,6 @@
 <div>
-    <div id="sidebar-wrapper" class="toggled">
-        <div class="sidebar-tab" onclick="toggleSidebar()">
+    <div id="sidebar-wrapper" onmouseover="closeSidebar()" onmouseout="openSidebar()" class="toggled">
+        <div class="sidebar-tab">
             <span style="line-height: 30px;">Categories</span>
         </div>
         <div class="sidebar-background"></div>
