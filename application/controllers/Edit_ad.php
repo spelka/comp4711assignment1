@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *	Based on instructions found on the CodeIgniter website:
 *	https://ellislab.com/codeigniter/user-guide/libraries/form_validation.html#theform
 */
-class Create_ad extends Application {
+class Edit_ad extends Application {
 
 	/**
 	 * Index Page for this controller.
@@ -30,20 +30,28 @@ class Create_ad extends Application {
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->helper('form');
 		$this->load->helper('formfields_helper');
 		$this->load->model('Ads');
 		$this->load->model('Users');
+		$this->load->model('Categories');
 	}
 
 	public function index($id)
 	{
 		//get the record from the RDB
-		$record = get($id);
+		$record = $this->ads->get($id);
+
+		$categories = $this->Categories->all();
+		foreach ($categories as $key => $value) {
+			$categories[$key] = $categories[$key]->name;
+		}
 
 		//populate the form elements from the RDB data
-		$this->data['navbar_activelink']    = base_url('/Create_ad');
-		$this->data['page_title'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
-		$this->data['ad_category'] = MakeComboField('category', 'ad_category', $record->category, $categories);
+		$this->data['navbar_activelink']    = base_url('/Edit_ad');
+		$this->data['page_title'] = 'Edit Ad'; //Change to whatever the ad is later
+		$this->data['adID'] = form_hidden('adID', $id);
+		$this->data['ad_category'] = MakeComboField('category', 'ad_category', $record->categoryID, $categories);
 		$this->data['ad_title'] = MakeTextField('title', 'ad_title', $record->title);
 		$this->data['ad_price'] = MakeTextField('price', 'ad_price', $record->price);
 		$this->data['ad_description'] = MakeTextArea('description', 'ad_description', $record->description);
@@ -63,7 +71,7 @@ class Create_ad extends Application {
 	 public function submit()
 	 {
 		//create empty entry in RDB
-		$record = $this->Ads->create();
+		$record = $this->ads->get($this->input->post('adID'));
 
 		$record->categoryID = $this->input->post('ad_category');	//does the combo box return an INTEGER?, no but the server promotes the INT to a string anyway so this is cool
 		$record->title = $this->input->post('ad_title');
@@ -99,15 +107,8 @@ class Create_ad extends Application {
 		}
 
 		//Create a new entry in the RDB
-		if (empty($record->id))
-		{
-			$this->Ads->add($record);
-		}
-		else
-		{
-			$this->Ads->update($record);
-		}
-		redirect('/');
+		$this->Ads->update($record);
+		//redirect('/Manage_ads');
 	 }
 
 	/**
@@ -134,8 +135,8 @@ class Create_ad extends Application {
 			$categories[$key] = $categories[$key]->name;
 		}
 
-		$this->data['navbar_activelink']    = base_url('/Create_ad');
-		$this->data['page_title'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
+		$this->data['navbar_activelink']    = base_url('/Edit_ad');
+		$this->data['page_title'] = 'Edit Ad'; //Change to whatever the ad is later
 		$this->data['ad_category'] = MakeComboField('category', 'ad_category', $record->categoryID, $categories);
 		$this->data['ad_title'] = MakeTextField('title', 'ad_title', $record->title);
 		$this->data['ad_price'] = MakeTextField('price', 'ad_price', $record->price);
@@ -148,7 +149,3 @@ class Create_ad extends Application {
 		$this->render();
 	}
 }
-
-?>
-/* End of file welcome.php */
-/* Location: ./application/controllers/Welcome.php */

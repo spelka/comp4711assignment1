@@ -1,4 +1,8 @@
-function toggleSidebar()
+function openSidebar()
 {
-    $('#sidebar-wrapper').toggleClass('toggled');
+    $('#sidebar-wrapper').addClass('toggled');
+}
+function closeSidebar()
+{
+    $('#sidebar-wrapper').removeClass('toggled');
 }
