@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 08, 2015 at 05:42 AM
+-- Generation Time: Mar 08, 2015 at 09:06 AM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `ads` (
   `description` text NOT NULL,
   `categoryID` int(11) NOT NULL,
   `title` text NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ads`
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `images` (
   `alt` text NOT NULL,
   `src` text NOT NULL,
   `adID` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `images`
@@ -98,6 +98,7 @@ INSERT INTO `images` (`ID`, `alt`, `src`, `adID`) VALUES
 (5, 'alternate text for image 5', 'safe.png', 5),
 (6, 'alternate text for image 6', 'submarine.png', 6),
 (7, 'nothimg importatnt', 'cake.png', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -110,14 +111,16 @@ CREATE TABLE IF NOT EXISTS `reviews` (
   `from` text NOT NULL,
   `review` text NOT NULL,
   `rating` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `reviews`
 --
 
 INSERT INTO `reviews` (`ID`, `to`, `from`, `review`, `rating`) VALUES
-(6, 'to user', 'from user', '<p>test</p>', 3);
+(6, 'to user', 'from user', '<p>test</p>', 3),
+(13, 'to user', 'from user', '<p>hello there</p>', 0),
+(14, 'to user', 'from user', '', 0);
 
 -- --------------------------------------------------------
 
@@ -131,21 +134,22 @@ CREATE TABLE IF NOT EXISTS `users` (
   `username` text NOT NULL,
   `password` text NOT NULL,
   `email` text NOT NULL,
-  `displayname` text NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+  `displayname` text NOT NULL,
+  `imageFileName` text NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`ID`, `type`, `username`, `password`, `email`, `displayname`) VALUES
-(7, 1, 'Bob Monkhouse', 'p@$sw0rD', 'bob@bcit.ca', 'Bob Monkhouse'),
-(8, 0, 'Elayne Boosler', 'p@$sw0rD', 'elayne@bcit.ca', 'Elayne Boosler'),
-(9, 0, 'Mark Russell', 'p@$sw0rD', 'mark@bcit.ca', 'Mark Russell'),
-(10, 0, 'Anonymous', 'p@$sw0rD', 'anonymous@bcit.ca', 'Anonymous'),
-(11, 0, 'Socrates', 'p@$sw0rD', 'socrates@bcit.ca', 'Socrates'),
-(12, 0, 'Isaac Asimov', 'p@$sw0rD', 'isaac@bcit.ca', 'Isaac Asimov'),
-(14, 0, 'test', 'test', 'test@email.com', 'test display name');
+INSERT INTO `users` (`ID`, `type`, `username`, `password`, `email`, `displayname`, `imageFileName`) VALUES
+(7, 1, 'Bob Monkhouse', 'p@$sw0rD', 'bob@bcit.ca', 'Bob Monkhouse', ''),
+(8, 0, 'Elayne Boosler', 'p@$sw0rD', 'elayne@bcit.ca', 'Elayne Boosler', ''),
+(9, 0, 'Mark Russell', 'p@$sw0rD', 'mark@bcit.ca', 'Mark Russell', ''),
+(10, 0, 'Anonymous', 'p@$sw0rD', 'anonymous@bcit.ca', 'Anonymous', ''),
+(11, 0, 'Socrates', 'p@$sw0rD', 'socrates@bcit.ca', 'Socrates', 'default-post-image.png'),
+(12, 0, 'Isaac Asimov', 'p@$sw0rD', 'isaac@bcit.ca', 'Isaac Asimov', ''),
+(24, 0, 'heck', 'heck', 'heck@heck.com', 'heck', 'circus.png');
 
 --
 -- Indexes for dumped tables
@@ -204,12 +208,12 @@ MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
+MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=16;
+MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=25;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
