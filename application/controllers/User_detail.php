@@ -124,7 +124,7 @@ class User_detail extends Application {
         $field['freview'] = makeTextArea('Your Review:', 'review', $review->review);
         $field['fsubmit'] = makeSubmitButton('Submit', "Submit", 'btn-success');
 
-        if($viewer != null)
+        if($viewer != null && $viewer != $username)
         {
             return $this->parser->parse('_rating_form', $field, true);
         }
@@ -197,7 +197,14 @@ class User_detail extends Application {
         else
         {
             $curruser = $this->users->get_current_user();
-            $this->present($curruser->username);
+            if($curruser != null)
+            {
+                $this->present($curruser->username);
+            }
+            else
+            {
+                redirect('/');
+            }
         }
     }
 }
