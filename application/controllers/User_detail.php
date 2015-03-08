@@ -1,40 +1,5 @@
 <?php
-/**
- * CodeIgniter
- *
- * An open source application development framework for PHP
- *
- * This content is released under the MIT License (MIT)
- *
- * Copyright (c) 2014 - 2015, British Columbia Institute of Technology
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * @package	CodeIgniter
- * @author	EllisLab Dev Team
- * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (http://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2015, British Columbia Institute of Technology (http://bcit.ca/)
- * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
- * @since	Version 1.0.0
- * @filesource
- */
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class User_detail extends Application {
@@ -42,6 +7,7 @@ class User_detail extends Application {
     public function __construct()
     {
         parent::__construct();
+        $this->load->library('parser');
         $this->load->helper('formfields');
         $this->load->model('users');
         $this->load->model('ads');
@@ -53,13 +19,78 @@ class User_detail extends Application {
         $this->load->helper('array');
     }
 
-    private function getUserDetails($id)
+    private function getUserDetails($username)
     {
-        $record = $this->users->get($id);
+        $record = $this->users->some('username', $username);
 
-        $this->data['username'] = $record->username;
-        $this->data['displayname'] = $record->displayname;
-        $this->data['email'] = $record->email;
+        // use the first record (username should be unique)
+        $this->data['username'] = $record[0]->username;
+        $this->data['displayname'] = $record[0]->displayname;
+        $this->data['email'] = $record[0]->email;
+
+        return $record[0]->ID;
+    }
+
+    private function generateStars($setStars, $numStars)
+    {
+        $stars = array();
+        for ($i = 1; $i <= $numStars; $i++)
+        {
+            $star = array( 'rate' => 'rated',
+                           'status' => ($i <= $setStars ? 'class=set' : 'class=not-set'));
+            $stars[] = $star;
+        }
+
+        return $stars;
+    }
+
+    // create the stars
+    private function getReviewStars($username)
+    {
+        // get total number of stars
+        $records = $this->reviews->some('to', $username);
+        $total = 0;
+
+        // get the average and round up to nearest whole number
+        foreach($records as $record)
+        {
+            $total += $record->rating;
+        }
+
+        $ratingCount = sizeof($records);
+        $rating = ceil($total/($ratingCount == 0 ? 1 : $ratingCount));
+
+
+        $reviewStars = array();
+        $reviewStars['stars'] = $this->generateStars($rating, NUMRATING);
+
+        return $this->parser->parse('_stars', $reviewStars, true);
+    }
+
+    // get reviews
+    private function getReviews($username)
+    {
+        // get reviews
+        $records = $this->reviews->some('to', $username);
+
+        // generate reviews
+        $reviews = array();
+        foreach($records as $record)
+        {
+            $review = array();
+            $review['from'] = $record->from;
+
+            // get user rating and display stars
+            $userrating = array();
+            $userrating['stars'] = $this->generateStars($record->rating, NUMRATING);
+            $review['stars'] = $this->parser->parse('_stars', $userrating, true);
+
+            $review['review'] = $record->review;
+            $reviews[] = $review;
+        }
+
+        $allReviews['rows'] = $reviews;
+        return $this->parser->parse('_reviews', $allReviews, true);
     }
 
     public function confirm()
@@ -80,26 +111,16 @@ class User_detail extends Application {
         redirect('/user_detail');
     }
 
-    public function present()
+    public function present($username)
     {
-        // Get user details
-        $id = $this->users->get_current_user_id();
-        if($id != null)
-            $this->getUserDetails($id);
-        else
-            redirect('/register');
+        $id = $this->getUserDetails($username);
 
         // Get user ads
         $ads = $this->ads->some('userID', $id);
         $this->data['cards'] = generateCards($this, $ads);
 
-        // rating
-        $this->data['frating'] = makeHiddenField('rating', '');
-        // for testing purposes so you can see the data
-        //$this->data['frating'] = makeTextField('Display Name:', 'rating', '');
-
-        $this->data['freview'] = makeTextArea('Your Review:', 'review', '');
-        $this->data['fsubmit'] = makeSubmitButton('Submit', "Submit", 'btn-success');
+        $this->data['reputation'] = $this->getReviewStars($username);
+        $this->data['reviews'] = $this->getReviews($username);
 
         $this->data['page_title'] = 'User Detail';
         $this->data['page_body'] = 'user_detail';
@@ -109,9 +130,9 @@ class User_detail extends Application {
         $this->render();
     }
 
-    public function index()
+    public function index($username)
 	{
-        $this->present();
+        $this->present($username);
 	}
 }
 
