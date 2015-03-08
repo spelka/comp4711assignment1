@@ -66,8 +66,7 @@ class Users extends MY_Model
     public function validatePassword($password)
     {
         $record = $this->get($this->getCurrentUserId());
-var_dump($record->password);
-var_dump($password);
+
         if(strcmp($record->password, $password) == 0)
             return true;
         else
