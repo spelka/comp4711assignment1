@@ -1,9 +1,13 @@
-<div class="row">
-    <div class="col-md-3 menu-background">
-        {search}
+<div>
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+        <div class="container">
+           {search}
+        </div>
         {categories}
     </div>
-    <div class="col-md-9">
+
+    <div>
         {cards}
     </div>
 

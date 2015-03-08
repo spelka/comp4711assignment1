@@ -21,5 +21,5 @@ $('.rating span').click(function(){
         }
     }
 
-    document.getElementById('frating').value = rating;
+    document.getElementById('rating').value = rating;
 });
