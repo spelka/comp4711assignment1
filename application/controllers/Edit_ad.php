@@ -22,17 +22,17 @@ class Edit_ad extends Application {
 		$this->errors = array();
 	}
 
-	public function index($id)
+	public function index($id,$returnUrl)
 	{
 		//get the record from the RDB
 		$record = $this->ads->get($id);
-		$this->present($record);
+		$this->present($record,$returnUrl);
 	}
 
 	/**
 	 *	Get variables from the form, validate them, and submit them to the RDB
 	 */
-	 public function submit($adID)
+	 public function submit($adID,$returnUrl)
 	 {
 		// get ad from database
 		$record = $this->ads->get($adID);
@@ -41,10 +41,9 @@ class Edit_ad extends Application {
 		$record->title       = $this->input->post('ad_title');
 		$record->price       = $this->input->post('ad_price');
 		$record->description = $this->input->post('ad_description');
-
-		$record->flags    = 0;             //0 complaints against this post
-		$record->uploaded = date('Y-m-d'); //2015-03-04 yyyy-mm-dd
-		$record->userID   = $this->users->getCurrentUserId();
+		$record->userID      = $record->userID;
+		$record->flags       = 0;             //0 complaints against this post
+		$record->uploaded    = date('Y-m-d'); //2015-03-04 yyyy-mm-dd
 
 		// validate user input
 		if ($record->userID == null)
@@ -63,14 +62,15 @@ class Edit_ad extends Application {
 
 		//Create a new entry in the RDB
 		$this->ads->update($record);
-		redirect('/Manage_ads');
+		// redirect('/Manage_ads');
+		redirect($returnUrl);
 	 }
 
 	/**
 	*	Re-renders the form to the screen, including any error messages
 	*
 	*/
-	public function present($record)
+	public function present($record,$returnUrl)
 	{
 		// format & display errors
 		$message = '';
@@ -90,6 +90,7 @@ class Edit_ad extends Application {
 
 		// populate the form elements from the RDB data
 		$this->data['adID']           = $record->ID;
+		$this->data['returnurl']      = $returnUrl;
 		$this->data['ad_category']    = MakeComboField('category', 'ad_category', $record->categoryID, $combobox_entries);
 		$this->data['ad_title']       = MakeTextField('title', 'ad_title', $record->title);
 		$this->data['ad_price']       = MakeTextField('price', 'ad_price', $record->price);
