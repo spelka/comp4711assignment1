@@ -25,7 +25,7 @@ class Welcome extends Application {
     /**
      * displays all ads from the database.
      */
-    public function index()
+    public function index($message = '')
     {
         // inject template parameters
         $this->data['navbar_activelink'] = base_url('/');
@@ -39,6 +39,9 @@ class Welcome extends Application {
         // show all ads in the database
         $ads = $this->ads->all();
         $this->data['cards'] = generateCards($this, $ads);
+
+        // show messages if any
+        $this->data['message'] = $message;
 
         // render...
         $this->render();
