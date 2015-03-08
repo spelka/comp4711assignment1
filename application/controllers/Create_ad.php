@@ -14,11 +14,15 @@ class Create_ad extends Application {
 	function __construct()
 	{
 		parent::__construct();
+
+		// load helpers
 		$this->load->helper('formfields_helper');
-		$this->load->model('Ads');
-		$this->load->model('Users');
-		$this->load->model('Categories');
-		$this->load->model('Adimages');
+
+		// load models
+		$this->load->model('ads');
+		$this->load->model('users');
+		$this->load->model('images');
+		$this->load->model('categories');
 	}
 
 	/**
@@ -27,7 +31,7 @@ class Create_ad extends Application {
 	 */
 	public function index()
 	{
-		$newAd = $this->Ads->create();
+		$newAd = $this->ads->create();
 		$this->present($newAd);
 	}
 
@@ -37,7 +41,7 @@ class Create_ad extends Application {
 	public function submit()
 	{
 		// create empty entry in RDB
-		$newAd = $this->Ads->create();
+		$newAd = $this->ads->create();
 
 		// retrieve form parameters, and inject them into the ad object
 		$newAd->categoryID  = $this->input->post('ad_category');
@@ -66,37 +70,35 @@ class Create_ad extends Application {
 		// insert or update the ad
 		if (empty($newAd->ID))
 		{
-			$this->Ads->add($newAd);
-			$newAd->ID = $this->Ads->highest();
+			$newAd->ID = $this->ads->add($newAd);
 		}
 		else
 		{
-			$this->Ads->update($newAd);
+			$this->ads->update($newAd);
 		}
-
-		// make a directory for the uploaded file(s)
-		mkdir('./uploads/posts/'.$this->users->get_current_user_id());
 
 		// load & configure the upload library
 		$this->load->library('upload');
-
-		$config['upload_path']   =
-			'./uploads/users/'.$this->users->get_current_user_id();
+		$config['upload_path']   = './uploads/posts/'.$newAd->ID;
 		$config['allowed_types'] = 'gif|jpg|png';
 		$config['max_size']      = 100;
 		$this->upload->initialize($config);
 
+		// make a directory for the uploaded file(s)
+		mkdir($config['upload_path']);
+
 		// do the uploading
-		$this->upload->do_multi_upload('imagefile');
+		if(!$this->upload->do_multi_upload('imagefiles'))
+		{
+			echo 'failed to upload image(s)<br/>';
+			echo $this->upload->display_errors();
+		}
 
-		// insert uploaded images into the database
-
-		// associate the uploaded images with the ad, or if no images were
-		// uploaded, associate the ad with the default image.
-		$adimagerow = $this->Adimages->create();
-		$adimagerow->adID = $this->Ads->highest();
-		$adimagerow->imageID = 7;
-		$this->Adimages->add($adimagerow);
+		// add the image to our database
+		$uploadDetails = $this->upload->get_multi_upload_data();
+		foreach ($uploadDetails as $uploadDetail) {
+			$this->images->addAdImage('',$uploadDetail['file_name'],$newAd->ID);
+		}
 
 		redirect('/');
 	 }
@@ -124,20 +126,20 @@ class Create_ad extends Application {
 		$this->data['page_body'] = 'create_ad'; //the view that is to be rendered
 
 		// create combo box options
-		$categories = $this->Categories->all();
+		$categories = $this->categories->all();
 		$combobox_entries = array();
 		foreach ($categories as $key => $value) {
 			$combobox_entries[$categories[$key]->ID] = $categories[$key]->name;
 		}
 
-		// inject form parameters
-		$this->data['ad_images']      = makeUploadImageField('ad images', 'imagefile', true);
-		$this->data['ad_category']    = MakeComboField('category', 'ad_category', $record->categoryID, $combobox_entries);
-		$this->data['ad_title']       = MakeTextField('title', 'ad_title', $record->title);
-		$this->data['ad_price']       = MakeTextField('price', 'ad_price', $record->price);
-		$this->data['ad_description'] = MakeTextArea('description', 'ad_description', $record->description);
-		$this->data['ad_submit']      = makeSubmitButton('Process Ad', "Submit", 'btn-success');
-		$this->data['ad_cancel']      = makeCancelButton('Cancel');
+		// inject form fields
+		$this->data['ad_images']      = makeUploadImageField('Images:', 'imagefiles[]', true);
+		$this->data['ad_category']    = MakeComboField('Category:', 'ad_category', $record->categoryID, $combobox_entries);
+		$this->data['ad_title']       = MakeTextField('Title:', 'ad_title', $record->title);
+		$this->data['ad_price']       = MakeTextField('Price:', 'ad_price', $record->price);
+		$this->data['ad_description'] = MakeTextArea('Description:', 'ad_description', $record->description);
+		$this->data['ad_submit']      = makeSubmitButton('Process Ad:', "Submit", 'btn-success');
+		$this->data['ad_cancel']      = makeCancelButton('Cancel:');
 
 		$this->render();
 	}
