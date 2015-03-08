@@ -2,15 +2,6 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-/*
-Admin controller
-Provides functionality of ediing posts and deleteing posts
-When a user is deleted, all their posts are deleted with the user
-When a post is deleted, the post is deleted
-
-When edit is pressed, the site calls the edit ad page with the id of the ad
-*/
-
 class Manage_ads extends Application
 {
     public function __construct()
@@ -26,7 +17,7 @@ class Manage_ads extends Application
     public function index()
     {
         $this->data['page_title'] = '';
-        $this->data['page_body'] = 'Manage_ads.php';
+        $this->data['page_body'] = 'manage_ads.php';
 
         //Create Ad list
         $ads = $this->ads->some('userID',$this->users->getCurrentUserId());
