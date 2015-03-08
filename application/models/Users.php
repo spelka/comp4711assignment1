@@ -7,6 +7,9 @@ class Users extends MY_Model
         parent::__construct('users','ID');
         $this->load->helper('file');
 
+        $this->load->model('reviews');
+        $this->load->model('ads');
+
         $this->DEFAULT_IMAGE_PATH   = 'assets/img/default-profile-image.png';
         $this->ROOT_USER_IMAGE_PATH = 'uploads/users/';
     }
@@ -90,5 +93,31 @@ class Users extends MY_Model
         return ($user->imageFileName) ?
             $this->ROOT_USER_IMAGE_PATH.$user->ID.'/'.$user->imageFileName :
             $this->DEFAULT_IMAGE_PATH;
+    }
+
+    public function delete($userID,$key2=null)
+    {
+        // delete all ads associated with this user
+        $ads = $this->ads->some('userID',$userID);
+        foreach($ads as $ad)
+        {
+            $this->ads->delete($ad->ID);
+        }
+
+        // delete reviews associated with this user
+        $user = $this->get($userID);
+        $reviews = array_merge($this->reviews->some('to',$user->username),
+            $this->reviews->some('from',$user->username));
+        foreach($reviews as $review)
+        {
+            $this->reviews->delete($review->ID);
+        }
+
+        // delete the user's image folder
+        unlink($this->getUserImageSrc($userID));
+        rmdir($this->ROOT_USER_IMAGE_PATH.$user->ID);
+
+        // delete the ad
+        parent::delete($userID,null);
     }
 }

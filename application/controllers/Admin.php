@@ -93,11 +93,11 @@ class Admin extends Application
 	//Delete an user and any post associated with the user and refresh the page to update the view
 		public function deleteuser($userID)
 		{
-				$adArray = $this->ads->some('userID',$userID);
-				foreach($adArray as $ad)
-				{
-					 $this->ads->delete($ad->ID);
-				}
+				// $adArray = $this->ads->some('userID',$userID);
+				// foreach($adArray as $ad)
+				// {
+				// 	 $this->ads->delete($ad->ID);
+				// }
 
 				$this->users->delete($userID);
 				redirect('/Admin');
