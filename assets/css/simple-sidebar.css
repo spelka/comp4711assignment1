@@ -6,16 +6,21 @@
 
 /* Toggle Styles */
 
-#wrapper {
+/*#wrapper {
     padding-left: 0;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
-}
+}*/
 
-#wrapper.toggled {
+/*#wrapper.toggled {
     padding-left: 250px;
+}*/
+
+#sidebar-wrapper.toggled
+{
+    left: 0px;
 }
 
 #sidebar-wrapper {
@@ -25,12 +30,32 @@
     width: 0;
     height: 100%;
     margin-left: -250px;
-    overflow-y: auto;
-    background: #000;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
+}
+
+#sidebar-wrapper .sidebar-tab {
+    position: absolute;
+    width: 100px;
+    transform: rotate(-90deg);
+    z-index: 1001;
+    height: 30px;
+    right: -35px;
+    text-align: center;
+    top: 36px;
+    background: none repeat scroll 0% 0% rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+}
+
+#sidebar-wrapper .sidebar-background {
+    position: absolute;
+    z-index: 0;
+    height: 100%;
+    width: 100%;
+    right: 30px;
+    background: none repeat scroll 0% 0% rgb(0, 0, 0);
 }
 
 #wrapper.toggled #sidebar-wrapper {
@@ -106,11 +131,7 @@
     }
 
     #sidebar-wrapper {
-        width: 250px;
-    }
-
-    #wrapper.toggled #sidebar-wrapper {
-        width: 0;
+        width: 280px;
     }
 
     #page-content-wrapper {
