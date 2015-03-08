@@ -143,10 +143,4 @@
         position: relative;
         margin-right: 0;
     }
-
-    /* this is for the side-bar not overlap the content */
-    .content {
-        padding-left: 250px
-    }
 }
-
