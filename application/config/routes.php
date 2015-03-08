@@ -88,7 +88,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
-$route['user_detail/(:any)'] = 'user_detail/index/$1';
+
+// remove index from user detail (overlooked user_detail/confirm)
+//$route['user_detail/(:any)'] = 'user_detail/index/$1';
+
+// route user_detail page without user back to homepage
+$route['user_detail'] = 'welcome';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

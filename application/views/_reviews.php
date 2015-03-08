@@ -5,7 +5,7 @@
         <div id="stars" class="rating small">
             {stars}
         </div>
-        <p><i>{review}</i></p>
+        {review}
     </div>
     <hr></hr>
     {/rows}
