@@ -19,6 +19,7 @@ class Application extends CI_Controller {
         $this->choices['Profile Management'] = base_url('/Profile_management');
         $this->choices['User Details']       = base_url('/User_detail');
         $this->choices['Create Ad']          = base_url('/Create_ad');
+        $this->choices['Admin Page']         = base_url('/Admin');
 
         // default placeholder values for _template view
         $this->data['baseurl']           = base_url('/');  // base url of the site
