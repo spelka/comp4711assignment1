@@ -161,7 +161,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`ID`, `type`, `username`, `password`, `email`, `displayname`, `imageFileName`) VALUES
-(7, 1, 'Bob Monkhouse', 'p@$sw0rD', 'bob@bcit.ca', 'Bob Monkhouse', ''),
+(7, 1, 'admin', 'admin', 'bob@bcit.ca', 'Bob Monkhouse', ''),
 (8, 0, 'Elayne Boosler', 'p@$sw0rD', 'elayne@bcit.ca', 'Elayne Boosler', ''),
 (9, 0, 'Mark Russell', 'p@$sw0rD', 'mark@bcit.ca', 'Mark Russell', ''),
 (10, 0, 'Anonymous', 'p@$sw0rD', 'anonymous@bcit.ca', 'Anonymous', ''),

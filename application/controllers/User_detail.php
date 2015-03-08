@@ -97,8 +97,7 @@ class User_detail extends Application {
     private function generateReviewForm($username, $viewer)
     {
         // get review
-        $record = $this->reviews->getReviewFrom($viewer, $username);
-        $review = $record[0];
+        $review = $this->reviews->getReviewFrom($viewer, $username);
 
         // generate review form
         $field['action'] = '/user_detail/confirm';
@@ -125,8 +124,14 @@ class User_detail extends Application {
         $field['freview'] = makeTextArea('Your Review:', 'review', $review->review);
         $field['fsubmit'] = makeSubmitButton('Submit', "Submit", 'btn-success');
 
-        return $this->parser->parse('_rating_form', $field, true);
-
+        if($viewer != null && $viewer != $username)
+        {
+            return $this->parser->parse('_rating_form', $field, true);
+        }
+        else
+        {
+            return '';
+        }
     }
 
 
@@ -164,6 +169,9 @@ class User_detail extends Application {
     {
         $id = $this->getUserDetails($username);
 
+        $curruser = $this->users->getCurrentUser();
+        $viewer = ($curruser != null) ? $curruser->username : null;
+
         // Get user ads
         $ads = $this->ads->some('userID', $id);
 
@@ -171,7 +179,7 @@ class User_detail extends Application {
 
         $this->data['reputation'] = $this->getReviewStars($username);
         $this->data['reviews'] = $this->getReviews($username);
-        $this->data['rating'] = $this->generateReviewForm($username, 'Socrates');
+        $this->data['rating'] = $this->generateReviewForm($username, $viewer);
         $this->data['page_title'] = 'User Detail';
         $this->data['page_body'] = 'user_detail';
 
@@ -180,10 +188,25 @@ class User_detail extends Application {
         $this->render();
     }
 
-    public function index($username)
-	{
-        $this->present($username);
-	}
+    public function index($username = null)
+    {
+        if($username != null)
+        {
+            $this->present($username);
+        }
+        else
+        {
+            $curruser = $this->users->getCurrentUser();
+            if($curruser != null)
+            {
+                $this->present($curruser->username);
+            }
+            else
+            {
+                redirect('/');
+            }
+        }
+    }
 }
 
 /* End of file User_detail.php */

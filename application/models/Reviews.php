@@ -13,6 +13,7 @@ class Reviews extends MY_Model {
             " WHERE `from`='" . $viewer . "' AND `to`='". $viewee . "'";
 
         $query = $this->db->query($sql);
-        return $query->result();
+        $records = $query->result();
+        return (count($records) > 0) ? $records[0] : $this->reviews->create();
     }
 }
