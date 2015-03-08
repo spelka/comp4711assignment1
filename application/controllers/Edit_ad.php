@@ -7,22 +7,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 class Edit_ad extends Application {
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 *         http://example.com/index.php/welcome
-	 *    - or -
-	 *         http://example.com/index.php/welcome/index
-	 *    - or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see http://codeigniter.com/user_guide/general/urls.html
-	 */
-
 	 /**
 	 * Constructor, creates the Create_ad class object, and loads the methods found in the formfields_helper
 	 *
@@ -32,93 +16,63 @@ class Edit_ad extends Application {
 		parent::__construct();
 		$this->load->helper('form');
 		$this->load->helper('formfields_helper');
-		$this->load->model('Ads');
-		$this->load->model('Users');
-		$this->load->model('Categories');
+		$this->load->model('ads');
+		$this->load->model('users');
+		$this->load->model('categories');
+		$this->errors = array();
 	}
 
 	public function index($id)
 	{
 		//get the record from the RDB
 		$record = $this->ads->get($id);
-
-		$categories = $this->Categories->all();
-		foreach ($categories as $key => $value) {
-			$categories[$key] = $categories[$key]->name;
-		}
-
-		//populate the form elements from the RDB data
-		$this->data['navbar_activelink']    = base_url('/Edit_ad');
-		$this->data['page_title'] = 'Edit Ad'; //Change to whatever the ad is later
-		$this->data['adID'] = form_hidden('adID', $id);
-		$this->data['ad_category'] = MakeComboField('category', 'ad_category', $record->categoryID, $categories);
-		$this->data['ad_title'] = MakeTextField('title', 'ad_title', $record->title);
-		$this->data['ad_price'] = MakeTextField('price', 'ad_price', $record->price);
-		$this->data['ad_description'] = MakeTextArea('description', 'ad_description', $record->description);
-
-		$this->data['page_body'] = 'edit_ad'; //the view that is to be rendered
-
-		$this->data['ad_submit'] = makeSubmitButton('Process Ad', "Update", 'btn-success');
-
-		//render the form
-		$this->render();
-
+		$this->present($record);
 	}
 
 	/**
 	 *	Get variables from the form, validate them, and submit them to the RDB
 	 */
-	 public function submit()
+	 public function submit($adID)
 	 {
-		//create empty entry in RDB
-		$record = $this->ads->get($this->input->post('adID'));
+		// get ad from database
+		$record = $this->ads->get($adID);
 
-		$record->categoryID = $this->input->post('ad_category');	//does the combo box return an INTEGER?, no but the server promotes the INT to a string anyway so this is cool
-		$record->title = $this->input->post('ad_title');
-		$record->price = $this->input->post('ad_price');
+		$record->categoryID  = $this->input->post('ad_category');
+		$record->title       = $this->input->post('ad_title');
+		$record->price       = $this->input->post('ad_price');
 		$record->description = $this->input->post('ad_description');
 
-		$record->flags = 0;			//0 complaints against this post
+		$record->flags    = 0;             //0 complaints against this post
 		$record->uploaded = date('Y-m-d'); //2015-03-04 yyyy-mm-dd
-		$record->userID = $this->users->getCurrentUserId();
-
+		$record->userID   = $this->users->getCurrentUserId();
 
 		// validate user input
 		if ($record->userID == null)
-		{
 			$this->errors[] = 'You must log in to submit a post';
-		}
-
 		if (empty($record->title))
-		{
 			$this->errors[] = 'You must enter a title for your advertisement';
-		}
-
 		if ($record->price < 0)
-		{
 			$this->errors[] = 'You cannot enter a negative amount of money';
-		}
 
 		// redisplay if any errors
 		if (count($this->errors) > 0)
 		{
-			$this->displayError($record);
+			$this->present($record);
 			return; // make sure we don't try to save anything
 		}
 
 		//Create a new entry in the RDB
-		$this->Ads->update($record);
-		//redirect('/Manage_ads');
+		$this->ads->update($record);
+		redirect('/Manage_ads');
 	 }
 
 	/**
 	*	Re-renders the form to the screen, including any error messages
 	*
 	*/
-	public function displayError($record)
+	public function present($record)
 	{
-		//error codes at the top
-		// format any errors
+		// format & display errors
 		$message = '';
 		if (count($this->errors) > 0)
 		{
@@ -127,25 +81,28 @@ class Edit_ad extends Application {
 		}
 		$this->data['message'] = $message;
 
-		//the rest of the form
-
-		//specify combo box information
-		$categories = $this->Categories->all();
+		// create combo box options
+		$categories = $this->categories->all();
+		$combobox_entries = array();
 		foreach ($categories as $key => $value) {
-			$categories[$key] = $categories[$key]->name;
+			$combobox_entries[$categories[$key]->ID] = $categories[$key]->name;
 		}
 
-		$this->data['navbar_activelink']    = base_url('/Edit_ad');
-		$this->data['page_title'] = 'Edit Ad'; //Change to whatever the ad is later
-		$this->data['ad_category'] = MakeComboField('category', 'ad_category', $record->categoryID, $categories);
-		$this->data['ad_title'] = MakeTextField('title', 'ad_title', $record->title);
-		$this->data['ad_price'] = MakeTextField('price', 'ad_price', $record->price);
+		// populate the form elements from the RDB data
+		$this->data['adID']           = $record->ID;
+		$this->data['ad_category']    = MakeComboField('category', 'ad_category', $record->categoryID, $combobox_entries);
+		$this->data['ad_title']       = MakeTextField('title', 'ad_title', $record->title);
+		$this->data['ad_price']       = MakeTextField('price', 'ad_price', $record->price);
 		$this->data['ad_description'] = MakeTextArea('description', 'ad_description', $record->description);
 
-		$this->data['page_body'] = 'edit_ad'; //the view that is to be rendered
+		// inject template parameters
+		$this->data['navbar_activelink'] = base_url('/Edit_ad');
+		$this->data['page_title']        = 'Edit Ad'; //Change to whatever the ad is later
+		$this->data['page_body']         = 'edit_ad'; //the view that is to be rendered
 
 		$this->data['ad_submit'] = makeSubmitButton('Process Ad', "Update", 'btn-success');
 
+		//render the form
 		$this->render();
 	}
 }
