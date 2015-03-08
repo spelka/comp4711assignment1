@@ -38,4 +38,15 @@ class Users extends MY_Model
     {
         return $this->session->userdata(SESSION_UID);
     }
+
+    /**
+     * returns true if the current user is an admin; false otherwise.
+     *
+     * @return true if the current user is an admin; false otherwise.
+     */
+    public function is_current_user_admin()
+    {
+        $currUser = $this->get($this->get_current_user_id());
+        return ($currUser != null && $currUser->type == 1);
+    }
 }
