@@ -16,8 +16,9 @@ class Manage_ads extends Application
 
     public function index()
     {
-        $this->data['page_title'] = '';
-        $this->data['page_body'] = 'manage_ads.php';
+        $this->data['page_title']    = '';
+        $this->data['page_body']     = 'manage_ads.php';
+        $this->data['navbar_activelink'] = base_url('/Manage_ads');
 
         //Create Ad list
         $ads = $this->ads->some('userID',$this->users->getCurrentUserId());
