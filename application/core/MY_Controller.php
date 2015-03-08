@@ -23,6 +23,7 @@ class Application extends CI_Controller {
             $this->choices['Profile Management'] = base_url('/Profile_management');
             $this->choices['User Details']       = base_url('/User_detail');
             $this->choices['Create Ad']          = base_url('/Create_ad');
+            $this->choices['Manage Ads']          = base_url('/Manage_ads');
         }
         if($this->users->is_current_user_admin())
         {
