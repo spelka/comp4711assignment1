@@ -9,26 +9,26 @@ class Ad_Detail extends Application {
         $this->load->model('ads');
         $this->load->model('users');
         $this->load->model('images');
-        $this->load->model('adimages');
         $this->load->model('categories');
 
         $this->load->helper('carousel');
 
         // make the carousel
-        $images = $this->images->getImagesForAd($adID);
+        $images = $this->images->getAdImages($adID);
         $carousel = makeCarousel($images);
         $this->data['ad_carousel'] =
             $this->parser->parse('_carousel', $carousel, true);
 
         // make everything else
-        $ad = $this->ads->get($adID);                           // ad to display
+        $ad = $this->ads->get($adID);                         // ad to display
         $user = $this->users->get($ad->userID);               // ad owner
         $category = $this->categories->get($ad->categoryID);  // ad category
 
         $this->data['ad_title']         = $ad->title;
         $this->data['ad_category']      = $category->name;
         $this->data['ad_description']   = $ad->description;
-        $this->data['uploader_email']   = $user->email;
+        $this->data['uploader']         = $user->displayname;
+        $this->data['uploader_link']    = base_url('/User_detail/index/'.$user->username);
 
         // common to all pages
         $this->data['page_title'] = 'Starter Template for Bootstrap'; //Change to whatever the ad is later
